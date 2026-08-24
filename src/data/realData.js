@@ -1,5 +1,5 @@
-// Dados 100% Reais sincronizados do Monte Carmo Shopping
-// Última sincronização: 21/08/2026, 16:23:37
+// DADOS 100% OFICIAIS DO MONTE CARMO SHOPPING (PRODUÇÃO)
+// Sincronizado diretamente do portal https://montecarmoshopping.com.br
 
 export const realStoresData = [
   {
@@ -9,7 +9,6 @@ export const realStoresData = [
     "floor": "Local: A07",
     "hours": "10:00 - 22:00",
     "phone": "3118-8616",
-    "whatsapp": "31188616",
     "logo_icon": "💪",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202507241156131.jpg"
   },
@@ -20,7 +19,6 @@ export const realStoresData = [
     "floor": "Local: LZ2003",
     "hours": "10:00 - 22:00",
     "phone": "(31) 98931-0078",
-    "whatsapp": "5531989310078",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510270932421.jpg"
   },
@@ -31,7 +29,6 @@ export const realStoresData = [
     "floor": "Local: F2013",
     "hours": "10:00 - 22:00",
     "phone": "(31) 97131-6736",
-    "whatsapp": "5531971316736",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271003221.jpg"
   },
@@ -42,7 +39,6 @@ export const realStoresData = [
     "floor": "Local: Q-31",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99934-7532",
-    "whatsapp": "5531999347532",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/201906031409101.jpg"
   },
@@ -53,7 +49,6 @@ export const realStoresData = [
     "floor": "Local: L1066",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271013571.png"
   },
@@ -64,7 +59,6 @@ export const realStoresData = [
     "floor": "Local: A08",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509080948231.png"
   },
@@ -75,7 +69,6 @@ export const realStoresData = [
     "floor": "Local: F2001A",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271016221.jpg"
   },
@@ -86,7 +79,6 @@ export const realStoresData = [
     "floor": "Local: L1030",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99574-2023",
-    "whatsapp": "5531995742023",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202602201652571.jpg"
   },
@@ -97,7 +89,6 @@ export const realStoresData = [
     "floor": "Local: LS-1007",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99603-3268",
-    "whatsapp": "5531996033268",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202603311607491.PNG"
   },
@@ -108,9 +99,8 @@ export const realStoresData = [
     "floor": "Local: FF2001",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
-    "image_url": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&auto=format&fit=crop&q=80"
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
     "id": "store-123420",
@@ -119,9 +109,8 @@ export const realStoresData = [
     "floor": "Local: L1075",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏬",
-    "image_url": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&auto=format&fit=crop&q=80"
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
     "id": "store-123421",
@@ -130,7 +119,6 @@ export const realStoresData = [
     "floor": "Local: LZ202",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271021541.jpg"
   },
@@ -141,7 +129,6 @@ export const realStoresData = [
     "floor": "Local: L1116",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "💄",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271026201.jpg"
   },
@@ -152,7 +139,6 @@ export const realStoresData = [
     "floor": "Local: L1009",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99293-2725",
-    "whatsapp": "5531992932725",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271027551.jpg"
   },
@@ -163,7 +149,6 @@ export const realStoresData = [
     "floor": "Local: L1047",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3397-6652 e (31)98710-5239",
-    "whatsapp": "313397665231987105239",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271029401.jpg"
   },
@@ -174,7 +159,6 @@ export const realStoresData = [
     "floor": "Local: L1008",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3431-1601",
-    "whatsapp": "553134311601",
     "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271031161.jpg"
   },
@@ -185,7 +169,6 @@ export const realStoresData = [
     "floor": "Local: L-1108",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509151624411.png"
   },
@@ -196,7 +179,6 @@ export const realStoresData = [
     "floor": "Local: FF2006",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509081004381.png"
   },
@@ -207,7 +189,6 @@ export const realStoresData = [
     "floor": "Local: L1173",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3118-8616",
-    "whatsapp": "553131188616",
     "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271033411.jpg"
   },
@@ -218,7 +199,6 @@ export const realStoresData = [
     "floor": "Local: L1005",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "✈️",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271038491.jpg"
   },
@@ -229,7 +209,6 @@ export const realStoresData = [
     "floor": "Local: LS-1001",
     "hours": "10:00 - 22:00",
     "phone": "31 99406-8284",
-    "whatsapp": "5531994068284",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202208251025531.jpg"
   },
@@ -240,7 +219,6 @@ export const realStoresData = [
     "floor": "Local: L1065",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99597-9002",
-    "whatsapp": "5531995979002",
     "logo_icon": "💄",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271042531.jpg"
   },
@@ -251,7 +229,6 @@ export const realStoresData = [
     "floor": "Local: L1001",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3596-7380",
-    "whatsapp": "553135967380",
     "logo_icon": "💊",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271047411.jpg"
   },
@@ -262,7 +239,6 @@ export const realStoresData = [
     "floor": "Local: L1138",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509080956411.png"
   },
@@ -273,7 +249,6 @@ export const realStoresData = [
     "floor": "Local: L-1069",
     "hours": "10:00 - 22:00",
     "phone": "(31) 98350-9094",
-    "whatsapp": "5531983509094",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202401041429081.jpg"
   },
@@ -284,7 +259,6 @@ export const realStoresData = [
     "floor": "Local: LS1003",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510231412411.jpg"
   },
@@ -295,7 +269,6 @@ export const realStoresData = [
     "floor": "Local: ES0001",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509051801081.jpg"
   },
@@ -306,7 +279,6 @@ export const realStoresData = [
     "floor": "Local: FF2007",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509081001521.png"
   },
@@ -317,7 +289,6 @@ export const realStoresData = [
     "floor": "Local: Q-35",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202411120922371.jpg"
   },
@@ -328,7 +299,6 @@ export const realStoresData = [
     "floor": "Local: A05",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271050101.jpg"
   },
@@ -339,7 +309,6 @@ export const realStoresData = [
     "floor": "Local: Q27SI",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271052541.jpg"
   },
@@ -350,7 +319,6 @@ export const realStoresData = [
     "floor": "Local: A02",
     "hours": "10:00 - 22:00",
     "phone": "(31) 9 8427-5040",
-    "whatsapp": "5531984275040",
     "logo_icon": "🛍️",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271055001.jpg"
   },
@@ -361,7 +329,6 @@ export const realStoresData = [
     "floor": "Local: L1067",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99735-9994",
-    "whatsapp": "5531997359994",
     "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271056531.jpg"
   },
@@ -372,7 +339,6 @@ export const realStoresData = [
     "floor": "Local: L1076",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🛍️",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271058241.jpg"
   },
@@ -383,7 +349,6 @@ export const realStoresData = [
     "floor": "Local: FF-2006",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202206201524461.jpg"
   },
@@ -394,7 +359,6 @@ export const realStoresData = [
     "floor": "Local: FF-2002",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202601160852431.png"
   },
@@ -405,9 +369,8 @@ export const realStoresData = [
     "floor": "Local: FF2008",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏬",
-    "image_url": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&auto=format&fit=crop&q=80"
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
     "id": "store-123467",
@@ -416,9 +379,8 @@ export const realStoresData = [
     "floor": "Local: ES003",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏬",
-    "image_url": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&auto=format&fit=crop&q=80"
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
     "id": "store-123454",
@@ -427,7 +389,6 @@ export const realStoresData = [
     "floor": "Local: L1117",
     "hours": "10:00 - 22:00",
     "phone": "3118-8778",
-    "whatsapp": "31188778",
     "logo_icon": "👟",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271100231.jpg"
   },
@@ -438,7 +399,6 @@ export const realStoresData = [
     "floor": "Local: ES002",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271101481.jpg"
   },
@@ -449,7 +409,6 @@ export const realStoresData = [
     "floor": "Local: ML06",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99293-2725",
-    "whatsapp": "5531992932725",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271103321.jpg"
   },
@@ -460,7 +419,6 @@ export const realStoresData = [
     "floor": "Local: Q26",
     "hours": "10:00 - 22:00",
     "phone": "(31) 9 9308-6134",
-    "whatsapp": "5531993086134",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271106251.jpg"
   },
@@ -471,7 +429,6 @@ export const realStoresData = [
     "floor": "Local: L1003/04",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "💄",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509080945391.png"
   },
@@ -482,7 +439,6 @@ export const realStoresData = [
     "floor": "Local: L1077",
     "hours": "10:00 - 22:00",
     "phone": "(31) 98333-3705",
-    "whatsapp": "5531983333705",
     "logo_icon": "🛍️",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271708311.jpg"
   },
@@ -493,7 +449,6 @@ export const realStoresData = [
     "floor": "Local: L1015",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271710051.jpg"
   },
@@ -504,7 +459,6 @@ export const realStoresData = [
     "floor": "Local: Q10",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271711211.jpg"
   },
@@ -515,7 +469,6 @@ export const realStoresData = [
     "floor": "Local: L1157",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271714091.png"
   },
@@ -526,7 +479,6 @@ export const realStoresData = [
     "floor": "Local: Q16",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271716191.jpg"
   },
@@ -537,7 +489,6 @@ export const realStoresData = [
     "floor": "Local: Q-fixo",
     "hours": "10:00 - 22:00",
     "phone": "(11) 98506-8467",
-    "whatsapp": "5511985068467",
     "logo_icon": "📚",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/201907080959001.jpg"
   },
@@ -548,7 +499,6 @@ export const realStoresData = [
     "floor": "Local: Q11",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271728031.jpg"
   },
@@ -559,7 +509,6 @@ export const realStoresData = [
     "floor": "Local: L1078",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510231515081.png"
   },
@@ -570,7 +519,6 @@ export const realStoresData = [
     "floor": "Local: L1006",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99490-1060",
-    "whatsapp": "5531994901060",
     "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271729571.jpg"
   },
@@ -581,7 +529,6 @@ export const realStoresData = [
     "floor": "Piso 1",
     "hours": "10:00 - 22:00",
     "phone": "3118-8777",
-    "whatsapp": "31188777",
     "logo_icon": "👟",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/201907021517411.jpg"
   },
@@ -592,7 +539,6 @@ export const realStoresData = [
     "floor": "Local: Q01",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271730551.jpg"
   },
@@ -603,7 +549,6 @@ export const realStoresData = [
     "floor": "Local: F2014",
     "hours": "10:00 - 22:00",
     "phone": "(31) 98930-0807 | (31) 98650-7681",
-    "whatsapp": "3198930080731986507681",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271733261.jpg"
   },
@@ -614,7 +559,6 @@ export const realStoresData = [
     "floor": "Local: A6",
     "hours": "10:00 - 22:00",
     "phone": "3593-7090",
-    "whatsapp": "35937090",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202511141646111.jpg"
   },
@@ -625,9 +569,8 @@ export const realStoresData = [
     "floor": "Local: S1004",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99764-9389",
-    "whatsapp": "5531997649389",
     "logo_icon": "🍔",
-    "image_url": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&auto=format&fit=crop&q=80"
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
     "id": "store-79580",
@@ -636,7 +579,6 @@ export const realStoresData = [
     "floor": "Local: Q19 e Q39",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202108171035301.jpg"
   },
@@ -647,7 +589,6 @@ export const realStoresData = [
     "floor": "Local: Q-26",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "💄",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202207111138331.jpg"
   },
@@ -658,7 +599,6 @@ export const realStoresData = [
     "floor": "Local: FF2018",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509080940171.png"
   },
@@ -669,7 +609,6 @@ export const realStoresData = [
     "floor": "Local: A10",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "whatsapp": "553131171511",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202508181238211.png"
   },
@@ -680,7 +619,6 @@ export const realStoresData = [
     "floor": "Local: L1084",
     "hours": "10:00 - 22:00",
     "phone": "(31) 9 9302-2016",
-    "whatsapp": "5531993022016",
     "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202511141650351.jpg"
   },
@@ -691,7 +629,6 @@ export const realStoresData = [
     "floor": "Local: L-1036",
     "hours": "10:00 - 22:00",
     "phone": "(31) 98340-5996",
-    "whatsapp": "5531983405996",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202401021536361.jpg"
   },
@@ -702,7 +639,6 @@ export const realStoresData = [
     "floor": "Local: L1017",
     "hours": "10:00 - 22:00",
     "phone": "3108-0194",
-    "whatsapp": "31080194",
     "logo_icon": "🏬",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202507241158061.jpg"
   }
@@ -948,5 +884,48 @@ export const realCinemaMovies = [
     "trailer_url": "https://www.youtube.com/watch?v=pgt6bR84k7A",
     "sessions": "Sala 5 2D DUB:14h05 | Sala 5 2D DUB:16h20 | Sala 5 2D DUB:18h35 | Sala 5 2D LEG:20h45",
     "ticket_url": "https://www.cineart.com.br/cinema/cineart-monte-carmo"
+  }
+];
+
+export const realBannersData = [
+  {
+    "id": 1,
+    "tag": "Cinema & Lazer",
+    "title": "Cineart Monte Carmo",
+    "subtitle": "Salas 100% digitais com a melhor tecnologia de som e imagem.",
+    "buttonText": "Ver Programação →",
+    "action": "cinema_redirect",
+    "link": "https://www.cineart.com.br/cinema/cineart-monte-carmo",
+    "bgImage": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
+  },
+  {
+    "id": 2,
+    "tag": "Estacionamento",
+    "title": "Estacionamento Fácil",
+    "subtitle": "Pague seu ticket com agilidade e conforto pelo app oficial Zul+.",
+    "buttonText": "Pagar Estacionamento →",
+    "action": "parking_redirect",
+    "link": "https://play.google.com/store/apps/details?id=br.com.zuldigital",
+    "bgImage": "https://sites.madnezz.com.br/api/site/upload/Banner/202605131356321.jpg"
+  },
+  {
+    "id": 3,
+    "tag": "Eventos & Lazer",
+    "title": "Espaço de Eventos",
+    "subtitle": "Venha fazer seu evento, festa ou confraternização com a gente!",
+    "buttonText": "Saiba Mais →",
+    "action": "events",
+    "link": "https://wa.me/553131171511?text=Ol%C3%A1%2C%20gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20o%20Espa%C3%A7o%20de%20Eventos%20do%20Monte%20Carmo%20Shopping!",
+    "bgImage": "https://sites.madnezz.com.br/api/site/upload/Banner/202212221200261.jpg"
+  },
+  {
+    "id": 4,
+    "tag": "Coworking",
+    "title": "Espaço Coworking",
+    "subtitle": "Ambiente moderno e climatizado para reuniões e trabalho.",
+    "buttonText": "Conhecer Espaço →",
+    "action": "coworking",
+    "link": "https://wa.me/553131171511?text=Ol%C3%A1%2C%20gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20o%20Coworking%20do%20Monte%20Carmo!",
+    "bgImage": "https://sites.madnezz.com.br/api/site/upload/Banner/202504241119031.png"
   }
 ];

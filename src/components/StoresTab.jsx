@@ -1,254 +1,157 @@
 import React, { useState } from 'react';
-import { Search, MapPin, Clock, MessageCircle, Star, Ticket, Film, Store, Play } from 'lucide-react';
-import { storesData, realCinemaMovies } from '../data/mockData';
+import { Search, MapPin, Clock, Phone, ChevronRight, Store } from 'lucide-react';
+import { realStoresData } from '../data/realData';
 
-export default function StoresTab({ setActiveTab }) {
-  const [activeSubTab, setActiveSubTab] = useState('stores'); // 'stores' or 'cinema'
+export default function StoresTab() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('Todos');
+  const [selectedCategory, setSelectedCategory] = useState('Todas');
+  const [selectedStore, setSelectedStore] = useState(null);
 
-  // Extract unique categories from real stores
-  const categoriesSet = new Set(storesData.map(s => s.category).filter(Boolean));
-  const filters = ['Todos', ...Array.from(categoriesSet).slice(0, 8)];
+  const categories = [
+    'Todas', 
+    'Alimentação', 
+    'Vestuário', 
+    'Diversão', 
+    'Perfumaria', 
+    'Calçados', 
+    'Serviços', 
+    'Academia'
+  ];
 
-  const filteredStores = storesData.filter(store => {
+  const filteredStores = realStoresData.filter(store => {
     const matchesSearch = store.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           store.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           store.floor.toLowerCase().includes(searchTerm.toLowerCase());
     
-    if (!matchesSearch) return false;
-    if (selectedFilter === 'Todos') return true;
-    return store.category === selectedFilter;
-  });
+    const matchesCategory = selectedCategory === 'Todas' || 
+                            store.category.toLowerCase().includes(selectedCategory.toLowerCase());
 
-  const filteredMovies = realCinemaMovies.filter(movie => {
-    return movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           movie.genre.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch && matchesCategory;
   });
 
   return (
     <div>
-      {/* Sub-tab Navigation (Lojas vs Cinema) */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', background: 'var(--bg-card)', padding: '4px', borderRadius: 'var(--radius-full)', border: '1px solid var(--border-glass)' }}>
-        <button
-          style={{
-            flex: 1,
-            padding: '8px 14px',
-            borderRadius: 'var(--radius-full)',
-            border: 'none',
-            background: activeSubTab === 'stores' ? 'var(--brand-primary)' : 'transparent',
-            color: activeSubTab === 'stores' ? '#fff' : 'var(--text-muted)',
-            fontWeight: '800',
-            fontSize: '12px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            transition: 'all 0.2s ease'
-          }}
-          onClick={() => setActiveSubTab('stores')}
-        >
-          <Store size={15} /> Guia de Lojas ({storesData.length})
-        </button>
+      {/* Seção de Detalhe da Loja Aberta */}
+      {selectedStore ? (
+        <div className="glass-card" style={{ padding: '20px' }}>
+          <button 
+            onClick={() => setSelectedStore(null)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--brand-primary)',
+              fontSize: '13px',
+              fontWeight: '800',
+              cursor: 'pointer',
+              marginBottom: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            ← Voltar para a lista de lojas
+          </button>
 
-        <button
-          style={{
-            flex: 1,
-            padding: '8px 14px',
-            borderRadius: 'var(--radius-full)',
-            border: 'none',
-            background: activeSubTab === 'cinema' ? '#6366F1' : 'transparent',
-            color: activeSubTab === 'cinema' ? '#fff' : 'var(--text-muted)',
-            fontWeight: '800',
-            fontSize: '12px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            transition: 'all 0.2s ease'
-          }}
-          onClick={() => setActiveSubTab('cinema')}
-        >
-          <Film size={15} /> Cineart Cinema ({realCinemaMovies.length})
-        </button>
-      </div>
+          <img 
+            src={selectedStore.image_url} 
+            alt={selectedStore.name} 
+            style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '14px', marginBottom: '14px' }}
+          />
 
-      {/* Search Bar */}
-      <div style={{ position: 'relative', marginBottom: '14px' }}>
-        <Search size={18} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-        <input 
-          type="text"
-          placeholder={activeSubTab === 'stores' ? "Buscar loja (ex: Burger King, Cacau Show, Boliche)..." : "Buscar filme (ex: Terror, Romance, Ação)..."}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '12px 14px 12px 42px',
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border-glass)',
-            borderRadius: 'var(--radius-md)',
-            color: 'var(--text-main)',
-            fontSize: '13px',
-            outline: 'none'
-          }}
-        />
-      </div>
+          <h3 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '4px' }}>
+            {selectedStore.name}
+          </h3>
 
-      {/* Stores View */}
-      {activeSubTab === 'stores' && (
+          <span style={{ fontSize: '12px', color: 'var(--brand-primary)', fontWeight: '800', display: 'block', marginBottom: '12px' }}>
+            {selectedStore.category}
+          </span>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '18px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
+              <MapPin size={16} color="var(--brand-primary)" />
+              <span>{selectedStore.floor}</span>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
+              <Clock size={16} color="var(--brand-primary)" />
+              <span>Horário: 10:00 às 22:00</span>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
+              <Phone size={16} color="#06B6D4" />
+              <span>Telefone: <strong>{selectedStore.phone}</strong></span>
+            </div>
+          </div>
+
+          <a 
+            href={`tel:${selectedStore.phone?.replace(/\D/g, '')}`}
+            className="btn-primary-action"
+            style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+          >
+            <Phone size={16} /> Ligar para {selectedStore.name}
+          </a>
+        </div>
+      ) : (
         <>
-          {/* Category Pills */}
-          <div className="filter-pills-row">
-            {filters.map((f) => (
-              <button
-                key={f}
-                className={`filter-pill ${selectedFilter === f ? 'active' : ''}`}
-                onClick={() => setSelectedFilter(f)}
+          {/* Busca de Lojas */}
+          <div className="search-bar">
+            <Search size={18} color="var(--text-muted)" />
+            <input 
+              type="text" 
+              placeholder="Buscar por loja, segmento ou piso..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* Categorias Chips */}
+          <div className="category-scroll-chips">
+            {categories.map((cat) => (
+              <button 
+                key={cat} 
+                className={`category-chip ${selectedCategory === cat ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(cat)}
               >
-                {f}
+                {cat}
               </button>
             ))}
           </div>
 
-          {/* Stores List */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {filteredStores.length === 0 ? (
-              <div className="glass-card" style={{ textAlign: 'center', padding: '30px' }}>
-                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Nenhuma loja encontrada.</p>
-              </div>
-            ) : (
-              filteredStores.map((store) => (
-                <div key={store.id} className="store-list-card">
-                  <div className="store-left">
-                    <div className="store-icon-box">{store.logo}</div>
-                    <div>
-                      <h4 className="store-name">{store.name}</h4>
-                      <div className="store-sub" style={{ color: 'var(--brand-primary)', fontWeight: '700' }}>
-                        {store.category}
-                      </div>
-                      <div className="store-sub" style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
-                        <MapPin size={11} /> {store.floor}
-                      </div>
-                      <div className="store-sub" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Clock size={11} /> {store.hours} • Tel: {store.phone}
-                      </div>
-                    </div>
+          <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '12px', fontWeight: '700' }}>
+            Exibindo {filteredStores.length} lojas no Monte Carmo Shopping
+          </div>
+
+          {/* Lista de Lojas */}
+          <div className="stores-list">
+            {filteredStores.map((store) => (
+              <div 
+                key={store.id} 
+                className="store-card"
+                onClick={() => setSelectedStore(store)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="store-avatar" style={{ fontSize: '20px' }}>
+                  {store.logo_icon || '🏬'}
+                </div>
+
+                <div className="store-info" style={{ flex: 1 }}>
+                  <h4>{store.name}</h4>
+                  <div className="store-meta">
+                    <span>{store.category}</span>
+                    <span>•</span>
+                    <span>{store.floor}</span>
                   </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
-                    <a 
-                      href={`https://wa.me/${store.whatsapp}?text=Ol%C3%A1%20${encodeURIComponent(store.name)}%2C%20vi%20sua%20loja%20no%20App%20do%20MonteCarmo%20Shopping!`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="store-whatsapp-btn"
-                    >
-                      <MessageCircle size={14} /> WhatsApp
-                    </a>
-
-                    {store.couponsCount > 0 && (
-                      <button 
-                        onClick={() => setActiveTab('coupons')}
-                        style={{ background: 'none', border: 'none', color: 'var(--brand-gold)', fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
-                      >
-                        <Ticket size={12} /> {store.couponsCount} Cupons
-                      </button>
-                    )}
+                  <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Phone size={11} color="#06B6D4" />
+                    <span>{store.phone}</span>
                   </div>
                 </div>
-              ))
-            )}
+
+                <ChevronRight size={18} color="var(--brand-primary)" />
+              </div>
+            ))}
           </div>
         </>
-      )}
-
-      {/* Cinema View */}
-      {activeSubTab === 'cinema' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {filteredMovies.map((movie) => (
-            <div key={movie.id} className="glass-card" style={{ padding: '0', overflow: 'hidden', borderLeft: '4px solid #6366F1' }}>
-              <div style={{ display: 'flex', gap: '14px', padding: '14px' }}>
-                <img 
-                  src={movie.poster} 
-                  alt={movie.title}
-                  style={{ width: '90px', height: '130px', objectFit: 'cover', borderRadius: '10px', flexShrink: 0 }}
-                />
-
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <h4 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1.2' }}>
-                        {movie.title}
-                      </h4>
-                      <span style={{ fontSize: '10px', fontWeight: '800', background: 'rgba(99, 102, 241, 0.2)', color: '#818CF8', padding: '2px 6px', borderRadius: '4px' }}>
-                        {movie.rating}
-                      </span>
-                    </div>
-
-                    <div style={{ fontSize: '11px', color: 'var(--text-muted)', margin: '4px 0 8px 0' }}>
-                      {movie.genre} • {movie.duration}
-                    </div>
-
-                    <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: '1.4', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {movie.synopsis}
-                    </p>
-                  </div>
-
-                  <div style={{ marginTop: '10px', display: 'flex', gap: '8px' }}>
-                    <a 
-                      href={movie.ticketUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{
-                        padding: '6px 12px',
-                        background: '#6366F1',
-                        color: '#fff',
-                        borderRadius: 'var(--radius-full)',
-                        fontSize: '11px',
-                        fontWeight: '800',
-                        textDecoration: 'none',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px'
-                      }}
-                    >
-                      <Ticket size={12} /> Comprar Ingresso
-                    </a>
-
-                    {movie.trailer && (
-                      <a 
-                        href={movie.trailer}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                          padding: '6px 12px',
-                          background: 'rgba(255,255,255,0.1)',
-                          color: 'var(--text-main)',
-                          borderRadius: 'var(--radius-full)',
-                          fontSize: '11px',
-                          fontWeight: '700',
-                          textDecoration: 'none',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '4px'
-                        }}
-                      >
-                        <Play size={12} /> Trailer
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Sessions Bar */}
-              <div style={{ background: 'rgba(0,0,0,0.3)', padding: '8px 14px', fontSize: '11px', color: 'var(--brand-gold)', borderTop: '1px solid var(--border-glass)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Clock size={12} />
-                <span>Sessões Hoje: <strong>{movie.sessions}</strong></span>
-              </div>
-            </div>
-          ))}
-        </div>
       )}
     </div>
   );

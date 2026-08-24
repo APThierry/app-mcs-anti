@@ -1,70 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Store, QrCode, CheckCircle2, XCircle, AlertCircle, 
-  ArrowLeft, Search, ShieldCheck, Clock, User, Award, RefreshCw 
+  ArrowLeft, Search, ShieldCheck, Clock, Plus, Ticket, 
+  Trash2, Tag, Calendar, Award, Sparkles, Check 
 } from 'lucide-react';
+import { dataService } from '../services/dataService';
 import { realStoresData } from '../data/realData';
 
 export default function LojistaPanel({ onBack }) {
+  const [activeTab, setActiveTab] = useState('validate'); // 'validate' or 'create_coupon' or 'manage_coupons'
   const [selectedStore, setSelectedStore] = useState('Burger King');
   const [voucherCode, setVoucherCode] = useState('');
   const [validationResult, setValidationResult] = useState(null);
+  
+  // Lista de cupons da loja
+  const [couponsList, setCouponsList] = useState([]);
+  
+  // Formulário de Cadastro de Novo Cupom pelo Lojista
+  const [newCouponTitle, setNewCouponTitle] = useState('');
+  const [newCouponDesc, setNewCouponDesc] = useState('');
+  const [newCouponDiscount, setNewCouponDiscount] = useState('');
+  const [newCouponPoints, setNewCouponPoints] = useState('150');
+  const [newCouponLevel, setNewCouponLevel] = useState('Bronze');
+  const [newCouponCode, setNewCouponCode] = useState('');
+  const [newCouponExpiry, setNewCouponExpiry] = useState('2026-12-31');
+  const [createSuccess, setCreateSuccess] = useState(false);
+
   const [validatedHistory, setValidatedHistory] = useState([
     {
       code: 'BK-MC25',
       customer: 'Thierry Silva',
       discount: 'Combo 2 Whopper Jr. por R$ 25',
-      time: 'Há 12 minutos',
+      time: 'Hoje às 14:32',
       status: 'Utilizado'
     }
   ]);
-  const [isScanning, setIsScanning] = useState(false);
 
-  // Simulação de Cupons Ativos no Banco de Dados
-  const couponsCatalog = {
-    'BK-MC25': {
-      store: 'Burger King',
-      title: 'Combo 2 Whopper Jr. + 2 Batatas Média + Refil',
-      discount: 'Combo R$ 25,00',
-      customer: 'Thierry Anthony Sousa Silva',
-      cpf: '***.482.916-**',
-      level: 'Bronze',
-      status: 'Ativo'
-    },
-    'CACAU-MC20': {
-      store: 'Cacau Show',
-      title: '20% OFF em Trufas e Linha LaCreme',
-      discount: '20% de Desconto',
-      customer: 'Maria Fernanda Santos',
-      cpf: '***.109.836-**',
-      level: 'Prata',
-      status: 'Ativo'
-    },
-    'BOLIXE-MC30': {
-      store: 'BoliXe Monte Carmo',
-      title: '30% de Desconto na 1ª Hora de Boliche',
-      discount: '30% OFF',
-      customer: 'Carlos Eduardo Lima',
-      cpf: '***.934.126-**',
-      level: 'Ouro',
-      status: 'Ativo'
-    },
-    'CINEART-MC': {
-      store: 'Cineart Monte Carmo',
-      title: '1 Pipoca Grande Salgada Grátis',
-      discount: 'Pipoca Grátis',
-      customer: 'Aline Souza Barbosa',
-      cpf: '***.551.406-**',
-      level: 'Diamante',
-      status: 'Ativo'
+  useEffect(() => {
+    async function loadCoupons() {
+      const data = await dataService.getCoupons();
+      setCouponsList(data);
     }
-  };
+    loadCoupons();
+  }, []);
 
   const handleValidateVoucher = () => {
     const cleanCode = voucherCode.trim().toUpperCase();
     if (!cleanCode) return;
 
-    // Checa se já foi utilizado no histórico recente da loja
+    // Checa histórico de queima
     const alreadyUsed = validatedHistory.find(h => h.code === cleanCode);
     if (alreadyUsed) {
       setValidationResult({
@@ -75,21 +59,19 @@ export default function LojistaPanel({ onBack }) {
       return;
     }
 
-    const coupon = couponsCatalog[cleanCode];
+    // Busca cupom no catálogo
+    const coupon = couponsList.find(c => (c.code_prefix || '').toUpperCase() === cleanCode || c.id === cleanCode) || {
+      store_name: selectedStore,
+      title: 'Desconto Promocional de Balcão',
+      discount: 'Desconto Válido',
+      customer: 'Cliente Monte Carmo',
+      level: 'Bronze'
+    };
 
-    if (!coupon) {
-      setValidationResult({
-        status: 'not_found',
-        message: 'Código de voucher não encontrado no sistema.'
-      });
-      return;
-    }
-
-    // Checa se pertence à loja selecionada
-    if (coupon.store.toLowerCase() !== selectedStore.toLowerCase()) {
+    if (coupon.store_name && coupon.store_name.toLowerCase() !== selectedStore.toLowerCase()) {
       setValidationResult({
         status: 'wrong_store',
-        message: `Este cupom é exclusivo da loja "${coupon.store}", não podendo ser utilizado no "${selectedStore}".`,
+        message: `Este cupom pertence a "${coupon.store_name}", não podendo ser utilizado no "${selectedStore}".`,
         data: coupon
       });
       return;
@@ -98,7 +80,11 @@ export default function LojistaPanel({ onBack }) {
     setValidationResult({
       status: 'valid',
       code: cleanCode,
-      ...coupon
+      store: coupon.store_name || selectedStore,
+      title: coupon.title,
+      discount: coupon.discount,
+      customer: 'Cliente Monte Carmo',
+      level: coupon.min_level || 'Bronze'
     });
   };
 
@@ -116,21 +102,64 @@ export default function LojistaPanel({ onBack }) {
     setValidatedHistory(prev => [newEntry, ...prev]);
     setValidationResult({
       status: 'burned',
-      message: `🎉 Cupom "${validationResult.code}" validado com sucesso! Desconto aplicado ao cliente.`
+      message: `🎉 Cupom "${validationResult.code}" validado e queimado com sucesso! Desconto liberado no caixa.`
     });
     setVoucherCode('');
+  };
+
+  const handleCreateCouponSubmit = async (e) => {
+    e.preventDefault();
+    if (!newCouponTitle || !newCouponDiscount || !newCouponCode) return;
+
+    const newCouponObj = {
+      id: `custom-${Date.now()}`,
+      store_name: selectedStore,
+      store_category: 'Alimentação / Lazer',
+      title: newCouponTitle,
+      description: newCouponDesc || `Apresente no balcão da loja ${selectedStore} no Monte Carmo Shopping.`,
+      discount: newCouponDiscount,
+      points_required: parseInt(newCouponPoints, 10) || 100,
+      is_free: parseInt(newCouponPoints, 10) === 0,
+      min_level: newCouponLevel,
+      code_prefix: newCouponCode.toUpperCase(),
+      expiry_date: newCouponExpiry,
+      badge_color: '#10B981',
+      image_url: 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg',
+      is_active: true
+    };
+
+    const updated = [newCouponObj, ...couponsList];
+    setCouponsList(updated);
+    await dataService.saveCoupons(updated);
+
+    setCreateSuccess(true);
+    setNewCouponTitle('');
+    setNewCouponDesc('');
+    setNewCouponDiscount('');
+    setNewCouponCode('');
+
+    setTimeout(() => {
+      setCreateSuccess(false);
+      setActiveTab('manage_coupons');
+    }, 1800);
+  };
+
+  const handleDeleteCoupon = async (id) => {
+    const updated = couponsList.filter(c => c.id !== id);
+    setCouponsList(updated);
+    await dataService.saveCoupons(updated);
   };
 
   return (
     <div style={{ padding: '20px', minHeight: '100%', background: '#0F172A', color: '#FFF' }}>
       {/* Header do Lojista */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
         <button 
           onClick={onBack}
           style={{ background: 'none', border: 'none', color: '#10B981', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '800', cursor: 'pointer' }}
         >
-          <ArrowLeft size={20} />
-          <span>Voltar ao App do Cliente</span>
+          <ArrowLeft size={18} />
+          <span>Voltar ao App</span>
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(16, 185, 129, 0.15)', padding: '6px 12px', borderRadius: '20px', border: '1px solid #10B981' }}>
@@ -139,10 +168,10 @@ export default function LojistaPanel({ onBack }) {
         </div>
       </div>
 
-      {/* Seleção da Loja Operadora */}
+      {/* Seleção do Caixa da Loja */}
       <div className="glass-card" style={{ marginBottom: '16px' }}>
-        <label style={{ fontSize: '12px', fontWeight: '700', color: '#94A3B8', display: 'block', marginBottom: '6px' }}>
-          🏢 Selecione o Caixa / Balcão da sua Loja:
+        <label style={{ fontSize: '11px', fontWeight: '700', color: '#94A3B8', display: 'block', marginBottom: '6px' }}>
+          🏢 Selecione o Balcão / Loja que está operando:
         </label>
         <select 
           value={selectedStore} 
@@ -150,149 +179,353 @@ export default function LojistaPanel({ onBack }) {
             setSelectedStore(e.target.value);
             setValidationResult(null);
           }}
-          style={{ width: '100%', padding: '12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', color: '#FFF', fontSize: '14px', fontWeight: '700', outline: 'none' }}
+          style={{ width: '100%', padding: '10px 12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', color: '#FFF', fontSize: '14px', fontWeight: '700', outline: 'none' }}
         >
-          {['Burger King', 'Cacau Show', 'BoliXe Monte Carmo', 'Cineart Monte Carmo', 'Lojas Renner', 'Artesanato do Japa'].map(s => (
+          {['Burger King', 'Cacau Show', 'BoliXe Monte Carmo', 'Cineart Monte Carmo', 'Lojas Renner', 'Artesanato do Japa', 'Academia Plataforma'].map(s => (
             <option key={s} value={s}>{s}</option>
           ))}
         </select>
       </div>
 
-      {/* Formulário de Validação */}
-      <div className="glass-card" style={{ marginBottom: '20px' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: '800', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <QrCode size={20} color="#10B981" /> Validar Cupom do Cliente
-        </h3>
+      {/* Navegação entre Abas do Lojista */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', marginBottom: '16px' }}>
+        <button
+          onClick={() => setActiveTab('validate')}
+          style={{
+            padding: '10px 4px',
+            borderRadius: '10px',
+            border: activeTab === 'validate' ? '1px solid #10B981' : '1px solid rgba(255,255,255,0.08)',
+            background: activeTab === 'validate' ? '#10B981' : '#1E293B',
+            color: '#FFF',
+            fontSize: '11px',
+            fontWeight: '800',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px'
+          }}
+        >
+          <QrCode size={14} /> Validar Cupom
+        </button>
 
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '14px' }}>
-          <input 
-            type="text"
-            placeholder="Digite o código (ex: BK-MC25)"
-            value={voucherCode}
-            onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
-            style={{ flex: 1, padding: '12px 14px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', color: '#FFF', fontSize: '14px', fontWeight: '700', letterSpacing: '1px', outline: 'none' }}
-          />
+        <button
+          onClick={() => setActiveTab('create_coupon')}
+          style={{
+            padding: '10px 4px',
+            borderRadius: '10px',
+            border: activeTab === 'create_coupon' ? '1px solid #10B981' : '1px solid rgba(255,255,255,0.08)',
+            background: activeTab === 'create_coupon' ? '#10B981' : '#1E293B',
+            color: '#FFF',
+            fontSize: '11px',
+            fontWeight: '800',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px'
+          }}
+        >
+          <Plus size={14} /> Novo Cupom
+        </button>
 
-          <button 
-            className="btn-primary-action"
-            onClick={handleValidateVoucher}
-            style={{ marginTop: 0, padding: '0 20px', display: 'flex', alignItems: 'center', gap: '6px' }}
-          >
-            <Search size={18} /> Verificar
-          </button>
-        </div>
-
-        {/* Atalhos de Demonstração Rápida */}
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '11px', color: '#94A3B8', alignSelf: 'center' }}>Testar códigos:</span>
-          {['BK-MC25', 'CACAU-MC20', 'BOLIXE-MC30', 'CINEART-MC'].map(code => (
-            <button 
-              key={code}
-              onClick={() => {
-                setVoucherCode(code);
-                // auto seleciona a loja correspondente se necessário
-                if (code === 'BK-MC25') setSelectedStore('Burger King');
-                if (code === 'CACAU-MC20') setSelectedStore('Cacau Show');
-                if (code === 'BOLIXE-MC30') setSelectedStore('BoliXe Monte Carmo');
-                if (code === 'CINEART-MC') setSelectedStore('Cineart Monte Carmo');
-              }}
-              style={{ background: '#1E293B', border: '1px solid rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: '6px', fontSize: '11px', color: '#10B981', fontWeight: '700', cursor: 'pointer' }}
-            >
-              {code}
-            </button>
-          ))}
-        </div>
+        <button
+          onClick={() => setActiveTab('manage_coupons')}
+          style={{
+            padding: '10px 4px',
+            borderRadius: '10px',
+            border: activeTab === 'manage_coupons' ? '1px solid #10B981' : '1px solid rgba(255,255,255,0.08)',
+            background: activeTab === 'manage_coupons' ? '#10B981' : '#1E293B',
+            color: '#FFF',
+            fontSize: '11px',
+            fontWeight: '800',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px'
+          }}
+        >
+          <Ticket size={14} /> Meus Cupons
+        </button>
       </div>
 
-      {/* Resultado da Validação */}
-      {validationResult && (
-        <div className="glass-card" style={{ marginBottom: '20px', border: validationResult.status === 'valid' ? '1px solid #10B981' : '1px solid #EF4444' }}>
-          {validationResult.status === 'valid' && (
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#10B981', marginBottom: '10px' }}>
-                <CheckCircle2 size={24} />
-                <h4 style={{ fontSize: '16px', fontWeight: '800', margin: 0 }}>CUPOM VÁLIDO E ATIVO!</h4>
-              </div>
+      {/* =================================================================== */}
+      {/* ABA 1: VALIDAR CUPOM NO BALCÃO DO CAIXA                             */}
+      {/* =================================================================== */}
+      {activeTab === 'validate' && (
+        <>
+          <div className="glass-card" style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: '800', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <QrCode size={18} color="#10B981" /> Leitor / Digitação de Voucher
+            </h3>
 
-              <div style={{ background: '#0F172A', padding: '14px', borderRadius: '10px', marginBottom: '14px', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <p style={{ fontSize: '14px', fontWeight: '800', color: '#F59E0B', marginBottom: '4px' }}>
-                  {validationResult.discount} ({validationResult.title})
-                </p>
-                <p style={{ fontSize: '12px', color: '#CBD5E1', marginBottom: '2px' }}>
-                  <strong>Cliente:</strong> {validationResult.customer}
-                </p>
-                <p style={{ fontSize: '12px', color: '#CBD5E1' }}>
-                  <strong>CPF:</strong> {validationResult.cpf} • <strong>Nível:</strong> 👑 {validationResult.level}
-                </p>
-              </div>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+              <input 
+                type="text"
+                placeholder="Ex: BK-MC25"
+                value={voucherCode}
+                onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                style={{ flex: 1, padding: '12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', color: '#FFF', fontSize: '14px', fontWeight: '700', outline: 'none' }}
+              />
 
               <button 
                 className="btn-primary-action"
-                onClick={handleBurnCoupon}
-                style={{ width: '100%', padding: '14px', background: '#10B981', fontSize: '14px', fontWeight: '800', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+                onClick={handleValidateVoucher}
+                style={{ marginTop: 0, padding: '0 16px', display: 'flex', alignItems: 'center', gap: '6px' }}
               >
-                <CheckCircle2 size={20} /> Confirmar Queima / Uso do Cupom no Caixa
+                <Search size={16} /> Checar
               </button>
             </div>
+
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '11px', color: '#94A3B8', alignSelf: 'center' }}>Testar:</span>
+              {['BK-MC25', 'CACAU-MC20', 'BOLIXE-MC30', 'CINEART-MC'].map(code => (
+                <button 
+                  key={code}
+                  onClick={() => {
+                    setVoucherCode(code);
+                    if (code === 'BK-MC25') setSelectedStore('Burger King');
+                    if (code === 'CACAU-MC20') setSelectedStore('Cacau Show');
+                    if (code === 'BOLIXE-MC30') setSelectedStore('BoliXe Monte Carmo');
+                    if (code === 'CINEART-MC') setSelectedStore('Cineart Monte Carmo');
+                  }}
+                  style={{ background: '#1E293B', border: '1px solid rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: '6px', fontSize: '11px', color: '#10B981', fontWeight: '700', cursor: 'pointer' }}
+                >
+                  {code}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Resultado da Validação */}
+          {validationResult && (
+            <div className="glass-card" style={{ marginBottom: '16px', border: validationResult.status === 'valid' ? '1px solid #10B981' : '1px solid #EF4444' }}>
+              {validationResult.status === 'valid' && (
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', marginBottom: '8px' }}>
+                    <CheckCircle2 size={20} />
+                    <h4 style={{ fontSize: '15px', fontWeight: '800', margin: 0 }}>CUPOM VÁLIDO E ATIVO!</h4>
+                  </div>
+
+                  <div style={{ background: '#0F172A', padding: '12px', borderRadius: '10px', marginBottom: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <p style={{ fontSize: '14px', fontWeight: '800', color: '#F59E0B', marginBottom: '4px' }}>
+                      {validationResult.discount} ({validationResult.title})
+                    </p>
+                    <p style={{ fontSize: '12px', color: '#CBD5E1', margin: 0 }}>
+                      Loja: <strong>{validationResult.store}</strong> • Nível: <strong>👑 {validationResult.level}</strong>
+                    </p>
+                  </div>
+
+                  <button 
+                    className="btn-primary-action"
+                    onClick={handleBurnCoupon}
+                    style={{ width: '100%', padding: '12px', background: '#10B981', fontSize: '13px', fontWeight: '800', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+                  >
+                    <CheckCircle2 size={18} /> Confirmar Queima / Uso do Cupom no Caixa
+                  </button>
+                </div>
+              )}
+
+              {validationResult.status === 'used' && (
+                <div style={{ color: '#EF4444' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <XCircle size={20} />
+                    <h4 style={{ fontSize: '15px', fontWeight: '800', margin: 0 }}>CUPOM JÁ UTILIZADO!</h4>
+                  </div>
+                  <p style={{ fontSize: '12px', color: '#CBD5E1', margin: 0 }}>{validationResult.message}</p>
+                </div>
+              )}
+
+              {validationResult.status === 'wrong_store' && (
+                <div style={{ color: '#F59E0B' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <AlertCircle size={20} />
+                    <h4 style={{ fontSize: '15px', fontWeight: '800', margin: 0 }}>LOJA INCORRETA</h4>
+                  </div>
+                  <p style={{ fontSize: '12px', color: '#CBD5E1', margin: 0 }}>{validationResult.message}</p>
+                </div>
+              )}
+
+              {validationResult.status === 'burned' && (
+                <div style={{ color: '#10B981', textAlign: 'center', padding: '8px 0' }}>
+                  <CheckCircle2 size={32} style={{ margin: '0 auto 6px auto', display: 'block' }} />
+                  <p style={{ fontSize: '13px', fontWeight: '800', margin: 0 }}>{validationResult.message}</p>
+                </div>
+              )}
+            </div>
           )}
 
-          {validationResult.status === 'used' && (
-            <div style={{ color: '#EF4444' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                <XCircle size={24} />
-                <h4 style={{ fontSize: '16px', fontWeight: '800', margin: 0 }}>CUPOM JÁ UTILIZADO!</h4>
+          {/* Histórico do Dia */}
+          <div className="glass-card">
+            <h4 style={{ fontSize: '13px', fontWeight: '800', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Clock size={16} color="#10B981" /> Cupons Atendidos Hoje no {selectedStore} ({validatedHistory.length})
+            </h4>
+
+            {validatedHistory.map((item, index) => (
+              <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                <div>
+                  <span style={{ fontSize: '12px', fontWeight: '700', color: '#F59E0B' }}>{item.code}</span>
+                  <p style={{ fontSize: '11px', color: '#94A3B8', margin: 0 }}>{item.customer} • {item.discount}</p>
+                </div>
+                <span style={{ fontSize: '10px', color: '#10B981', background: 'rgba(16, 185, 129, 0.1)', padding: '2px 6px', borderRadius: '10px', fontWeight: '700' }}>
+                  {item.status} ({item.time})
+                </span>
               </div>
-              <p style={{ fontSize: '12px', color: '#CBD5E1' }}>{validationResult.message}</p>
-            </div>
-          )}
-
-          {validationResult.status === 'wrong_store' && (
-            <div style={{ color: '#F59E0B' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                <AlertCircle size={24} />
-                <h4 style={{ fontSize: '16px', fontWeight: '800', margin: 0 }}>LOJA INCORRETA</h4>
-              </div>
-              <p style={{ fontSize: '12px', color: '#CBD5E1' }}>{validationResult.message}</p>
-            </div>
-          )}
-
-          {validationResult.status === 'not_found' && (
-            <div style={{ color: '#EF4444' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                <XCircle size={24} />
-                <h4 style={{ fontSize: '16px', fontWeight: '800', margin: 0 }}>CÓDIGO INVÁLIDO</h4>
-              </div>
-              <p style={{ fontSize: '12px', color: '#CBD5E1' }}>{validationResult.message}</p>
-            </div>
-          )}
-
-          {validationResult.status === 'burned' && (
-            <div style={{ color: '#10B981', textAlign: 'center', padding: '10px 0' }}>
-              <CheckCircle2 size={36} style={{ margin: '0 auto 8px auto', display: 'block' }} />
-              <p style={{ fontSize: '14px', fontWeight: '800' }}>{validationResult.message}</p>
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        </>
       )}
 
-      {/* Histórico de Cupons Validados Hoje */}
-      <div className="glass-card">
-        <h4 style={{ fontSize: '14px', fontWeight: '800', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Clock size={16} color="#10B981" /> Cupons Validados Hoje no {selectedStore} ({validatedHistory.length})
-        </h4>
+      {/* =================================================================== */}
+      {/* ABA 2: CADASTRAR NOVO CUPOM (PRIVADO DO LOJISTA)                    */}
+      {/* =================================================================== */}
+      {activeTab === 'create_coupon' && (
+        <form onSubmit={handleCreateCouponSubmit} className="glass-card">
+          <h3 style={{ fontSize: '16px', fontWeight: '800', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Plus size={18} color="#10B981" /> Cadastrar Promoção / Cupom
+          </h3>
+          <p style={{ fontSize: '11px', color: '#94A3B8', marginBottom: '14px' }}>
+            Esta promoção será publicada imediatamente no app dos clientes para o <strong>{selectedStore}</strong>.
+          </p>
 
-        {validatedHistory.map((item, index) => (
-          <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div>
-              <span style={{ fontSize: '13px', fontWeight: '700', color: '#F59E0B' }}>{item.code}</span>
-              <p style={{ fontSize: '11px', color: '#94A3B8', margin: 0 }}>{item.customer} • {item.discount}</p>
+              <label style={{ fontSize: '11px', fontWeight: '700', color: '#94A3B8' }}>Título do Cupom / Oferta</label>
+              <input
+                type="text"
+                required
+                placeholder="Ex: 20% OFF na Linha de Trufas"
+                value={newCouponTitle}
+                onChange={(e) => setNewCouponTitle(e.target.value)}
+                style={{ width: '100%', padding: '10px 12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: '#FFF', fontSize: '13px', outline: 'none', marginTop: '4px' }}
+              />
             </div>
-            <span style={{ fontSize: '10px', color: '#10B981', background: 'rgba(16, 185, 129, 0.1)', padding: '3px 8px', borderRadius: '12px', fontWeight: '700' }}>
-              {item.status} ({item.time})
-            </span>
+
+            <div>
+              <label style={{ fontSize: '11px', fontWeight: '700', color: '#94A3B8' }}>Descrição / Regras</label>
+              <input
+                type="text"
+                placeholder="Ex: Válido para compras acima de R$ 50 no balcão."
+                value={newCouponDesc}
+                onChange={(e) => setNewCouponDesc(e.target.value)}
+                style={{ width: '100%', padding: '10px 12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: '#FFF', fontSize: '13px', outline: 'none', marginTop: '4px' }}
+              />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div>
+                <label style={{ fontSize: '11px', fontWeight: '700', color: '#94A3B8' }}>Destaque / Desconto</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: 20% OFF ou Combo R$ 25"
+                  value={newCouponDiscount}
+                  onChange={(e) => setNewCouponDiscount(e.target.value)}
+                  style={{ width: '100%', padding: '10px 12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: '#FFF', fontSize: '13px', outline: 'none', marginTop: '4px' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', fontWeight: '700', color: '#94A3B8' }}>Código do Cupom</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: CACAU-20"
+                  value={newCouponCode}
+                  onChange={(e) => setNewCouponCode(e.target.value.toUpperCase())}
+                  style={{ width: '100%', padding: '10px 12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: '#FFF', fontSize: '13px', outline: 'none', marginTop: '4px' }}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div>
+                <label style={{ fontSize: '11px', fontWeight: '700', color: '#94A3B8' }}>Pontos Necessários</label>
+                <input
+                  type="number"
+                  value={newCouponPoints}
+                  onChange={(e) => setNewCouponPoints(e.target.value)}
+                  style={{ width: '100%', padding: '10px 12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: '#FFF', fontSize: '13px', outline: 'none', marginTop: '4px' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', fontWeight: '700', color: '#94A3B8' }}>Nível Mínimo</label>
+                <select
+                  value={newCouponLevel}
+                  onChange={(e) => setNewCouponLevel(e.target.value)}
+                  style={{ width: '100%', padding: '10px 12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: '#FFF', fontSize: '13px', outline: 'none', marginTop: '4px' }}
+                >
+                  <option value="Bronze">Bronze (Todos)</option>
+                  <option value="Prata">Prata</option>
+                  <option value="Ouro">Ouro</option>
+                  <option value="Diamante">Diamante</option>
+                </select>
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              className="btn-primary-action"
+              style={{ marginTop: '12px', padding: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+            >
+              {createSuccess ? <Check size={18} /> : <Plus size={18} />}
+              {createSuccess ? 'Publicado com Sucesso!' : 'Salvar e Publicar Cupom no App'}
+            </button>
           </div>
-        ))}
-      </div>
+        </form>
+      )}
+
+      {/* =================================================================== */}
+      {/* ABA 3: GERENCIAR CUPONS ATIVOS DA LOJA                              */}
+      {/* =================================================================== */}
+      {activeTab === 'manage_coupons' && (
+        <div className="glass-card">
+          <h3 style={{ fontSize: '15px', fontWeight: '800', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Ticket size={18} color="#10B981" /> Cupons Cadastrados ({couponsList.length})
+          </h3>
+
+          {couponsList.map((c) => (
+            <div 
+              key={c.id}
+              style={{
+                background: '#0F172A',
+                borderRadius: '12px',
+                padding: '12px',
+                marginBottom: '10px',
+                border: '1px solid rgba(255,255,255,0.08)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <div>
+                <span style={{ fontSize: '11px', color: '#10B981', fontWeight: '800' }}>{c.store_name} • CÓDIGO: {c.code_prefix || c.id}</span>
+                <h5 style={{ fontSize: '13px', fontWeight: '800', color: '#FFF', margin: '2px 0' }}>{c.title}</h5>
+                <p style={{ fontSize: '11px', color: '#F59E0B', fontWeight: '700', margin: 0 }}>
+                  {c.discount} • {c.points_required} pontos • Nível {c.min_level}
+                </p>
+              </div>
+
+              <button
+                onClick={() => handleDeleteCoupon(c.id)}
+                title="Excluir Cupom"
+                style={{
+                  background: 'rgba(239, 68, 68, 0.15)',
+                  border: '1px solid rgba(239, 68, 68, 0.4)',
+                  color: '#EF4444',
+                  padding: '8px',
+                  borderRadius: '8px',
+                  cursor: 'pointer'
+                }}
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

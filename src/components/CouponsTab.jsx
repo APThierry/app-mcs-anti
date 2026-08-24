@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Ticket, Sparkles, Tag, Clock } from 'lucide-react';
-import { couponsData } from '../data/mockData';
+import { dataService } from '../services/dataService';
 
 export default function CouponsTab({ userData, onSelectCoupon }) {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [coupons, setCoupons] = useState([]);
 
-  const categories = ['Todos', 'Gastronomia', 'Moda & Vestuário', 'Jóias & Acessórios', 'Lazer & Entretenimento'];
+  useEffect(() => {
+    async function load() {
+      const data = await dataService.getCoupons();
+      setCoupons(data);
+    }
+    load();
+  }, []);
+
+  const categories = ['Todos', 'Alimentação', 'Diversão', 'Moda', 'Serviços'];
 
   const filteredCoupons = selectedCategory === 'Todos'
-    ? couponsData
-    : couponsData.filter(c => c.category === selectedCategory);
+    ? coupons
+    : coupons.filter(c => (c.store_category || c.category || '').toLowerCase().includes(selectedCategory.toLowerCase()));
 
   return (
     <div>
@@ -19,21 +28,21 @@ export default function CouponsTab({ userData, onSelectCoupon }) {
           <div>
             <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600' }}>Seus Pontos de Fidelidade</span>
             <h3 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--brand-gold)' }}>
-              {userData.points.toLocaleString('pt-BR')} pts
+              {(userData?.points || 0).toLocaleString('pt-BR')} pts
             </h3>
           </div>
           <div style={{ textAlign: 'right' }}>
             <span style={{ fontSize: '11px', background: 'rgba(245, 158, 11, 0.2)', padding: '4px 10px', borderRadius: '12px', color: 'var(--brand-gold)', fontWeight: '700' }}>
-              👑 Nível {userData.level}
+              👑 Nível {userData?.level || 'Bronze'}
             </span>
           </div>
         </div>
         <div style={{ background: 'rgba(255,255,255,0.1)', height: '6px', borderRadius: '3px', overflow: 'hidden' }}>
-          <div style={{ width: `${(userData.points / userData.nextLevelPoints) * 100}%`, height: '100%', background: 'linear-gradient(90deg, #f59e0b, #10b981)', borderRadius: '3px' }} />
+          <div style={{ width: `${Math.min(100, ((userData?.points || 0) / 1000) * 100)}%`, height: '100%', background: 'linear-gradient(90deg, #f59e0b, #10b981)', borderRadius: '3px' }} />
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px', fontSize: '11px', color: 'var(--text-muted)' }}>
-          <span>Progresso para {userData.nextLevelName}</span>
-          <span>{userData.points} / {userData.nextLevelPoints} pts</span>
+          <span>Progresso no Clube Monte Carmo</span>
+          <span>{userData?.points || 0} pts</span>
         </div>
       </div>
 
@@ -54,13 +63,13 @@ export default function CouponsTab({ userData, onSelectCoupon }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {filteredCoupons.map((coupon) => (
           <div key={coupon.id} className="glass-card" style={{ padding: '0', overflow: 'hidden' }}>
-            <div style={{ height: '120px', backgroundImage: `url(${coupon.image})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
-              <span style={{ position: 'absolute', top: '10px', left: '10px', background: coupon.badgeColor, color: '#fff', padding: '6px 12px', borderRadius: '8px', fontWeight: '800', fontSize: '12px' }}>
+            <div style={{ height: '120px', backgroundImage: `url(${coupon.image_url || coupon.image || 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+              <span style={{ position: 'absolute', top: '10px', left: '10px', background: coupon.badge_color || coupon.badgeColor || '#10B981', color: '#fff', padding: '6px 12px', borderRadius: '8px', fontWeight: '800', fontSize: '12px' }}>
                 {coupon.discount}
               </span>
-              {coupon.isFree && (
+              {coupon.min_level && coupon.min_level !== 'Bronze' && (
                 <span style={{ position: 'absolute', top: '10px', right: '10px', background: '#ec4899', color: '#fff', padding: '4px 10px', borderRadius: '12px', fontWeight: '800', fontSize: '10px' }}>
-                  GRÁTIS Ouro
+                  Nível {coupon.min_level}
                 </span>
               )}
             </div>
@@ -68,10 +77,10 @@ export default function CouponsTab({ userData, onSelectCoupon }) {
             <div style={{ padding: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
                 <span style={{ fontSize: '12px', color: 'var(--brand-primary)', fontWeight: '700' }}>
-                  {coupon.storeName}
+                  {coupon.store_name || coupon.storeName}
                 </span>
                 <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Clock size={12} /> Validade: {coupon.expiryDate}
+                  <Clock size={12} /> Validade: {coupon.expiry_date || coupon.expiryDate || '2026-12-31'}
                 </span>
               </div>
 
@@ -86,7 +95,7 @@ export default function CouponsTab({ userData, onSelectCoupon }) {
                 <div>
                   <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Custo em Pontos</span>
                   <div style={{ fontSize: '16px', fontWeight: '800', color: 'var(--brand-gold)' }}>
-                    {coupon.isFree ? '0 pts (Benefício Exclusivo)' : `${coupon.pointsRequired} pts`}
+                    {coupon.is_free || coupon.points_required === 0 ? '0 pts (Benefício Exclusivo)' : `${coupon.points_required || coupon.pointsRequired} pts`}
                   </div>
                 </div>
 

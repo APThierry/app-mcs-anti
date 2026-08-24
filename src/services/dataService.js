@@ -143,7 +143,27 @@ export const dataService = {
         .eq('is_active', true);
       if (!error && data && data.length > 0) return data;
     }
+    const local = getLocalItem(STORAGE_KEYS.COUPONS, null);
+    if (local && local.length > 0) return local;
     return couponsData;
+  },
+
+  async saveCoupons(coupons) {
+    setLocalItem(STORAGE_KEYS.COUPONS, coupons);
+    if (isSupabaseConfigured) {
+      try {
+        await supabase.from('coupons').upsert(coupons);
+      } catch (err) {
+        console.warn('Erro ao sincronizar cupons com Supabase:', err.message);
+      }
+    }
+  },
+
+  async addCoupon(couponData) {
+    const current = await this.getCoupons();
+    const updated = [couponData, ...current];
+    await this.saveCoupons(updated);
+    return couponData;
   },
 
   async redeemCoupon(coupon) {
