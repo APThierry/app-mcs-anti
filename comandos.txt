@@ -1,0 +1,10 @@
+Criamos o script 
+
+scripts/sync_data.js
+ e adicionamos o comando no package.json.
+
+Sempre que você quiser atualizar os dados das lojas ou do cinema com o que está no ar hoje, basta rodar no terminal:
+
+npm run sync
+
+Senha Supabase - GSTI2014mcs1

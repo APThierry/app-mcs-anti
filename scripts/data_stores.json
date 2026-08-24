@@ -1,0 +1,678 @@
+{
+  "ramo": [
+    {
+      "ramo_id": "15281",
+      "ramo_nome": "Academia",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4685",
+      "ramo_nome": "Alimentação",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4686",
+      "ramo_nome": "Artigos Diversos",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4691",
+      "ramo_nome": "Cafeteria",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4692",
+      "ramo_nome": "Calçados",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4773",
+      "ramo_nome": "Diversão",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "9561",
+      "ramo_nome": "Drogaria",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "16776",
+      "ramo_nome": "Emplacamento de Veículos",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "16474",
+      "ramo_nome": "Entretenimento",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "16774",
+      "ramo_nome": "Escritório",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "16779",
+      "ramo_nome": "Espaço de Trabalho Compartilhado",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "14295",
+      "ramo_nome": "Estética",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "15519",
+      "ramo_nome": "Estúdio Audiovisual",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "7679",
+      "ramo_nome": "Igreja",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "15280",
+      "ramo_nome": "Instrumentos Musicais",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "13609",
+      "ramo_nome": "Lanchonete",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4697",
+      "ramo_nome": "Lazer",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4698",
+      "ramo_nome": "Livraria",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4699",
+      "ramo_nome": "Loja de Departamentos",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "15524",
+      "ramo_nome": "Loja de Games",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "6590",
+      "ramo_nome": "Lotérica",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "16653",
+      "ramo_nome": "Perfumaria",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4703",
+      "ramo_nome": "Perfumaria e cosméticos ",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "16648",
+      "ramo_nome": "Realidade Virtual",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4772",
+      "ramo_nome": "Serviços",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "7889",
+      "ramo_nome": "Serviços Estéticos",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "6523",
+      "ramo_nome": "Supermercado",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4708",
+      "ramo_nome": "Telefonia Celular",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "16363",
+      "ramo_nome": "Turismo",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "16514",
+      "ramo_nome": "Utilidades",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "12703",
+      "ramo_nome": "Venda de Colchões",
+      "ramo_nome_sp": ""
+    },
+    {
+      "ramo_id": "4710",
+      "ramo_nome": "Vestuário Feminino",
+      "ramo_nome_sp": ""
+    }
+  ],
+  "loja": [
+    {
+      "id": "123397",
+      "shopping_id": "166",
+      "loja_nome": "ACADEMIA PLATAFORMA",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "ACADEMIA PLATAFORMA"
+    },
+    {
+      "id": "123398",
+      "shopping_id": "166",
+      "loja_nome": "AIR JUMP",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "AIR JUMP"
+    },
+    {
+      "id": "123401",
+      "shopping_id": "166",
+      "loja_nome": "ARTESANATO DO JAPA",
+      "loja_logo": "202510271003222.jpg",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271003222.jpg",
+      "nome": "ARTESANATO DO JAPA"
+    },
+    {
+      "id": "35476",
+      "shopping_id": "166",
+      "loja_nome": "Berry Balas",
+      "loja_logo": "202002101656131.jpg",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202002101656131.jpg",
+      "nome": "Berry Balas"
+    },
+    {
+      "id": "123405",
+      "shopping_id": "166",
+      "loja_nome": "BIG TOYS",
+      "loja_logo": "202510271013572.png",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271013572.png",
+      "nome": "BIG TOYS"
+    },
+    {
+      "id": "123408",
+      "shopping_id": "166",
+      "loja_nome": "BoliXe Monte Carmo - Boliche",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "BoliXe Monte Carmo - Boliche"
+    },
+    {
+      "id": "123410",
+      "shopping_id": "166",
+      "loja_nome": "BURGER KING",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "BURGER KING"
+    },
+    {
+      "id": "123412",
+      "shopping_id": "166",
+      "loja_nome": "CACAU SHOW",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "CACAU SHOW"
+    },
+    {
+      "id": "123413",
+      "shopping_id": "166",
+      "loja_nome": "Cadillac Pizza & Bar",
+      "loja_logo": "202603311607492.jpg",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202603311607492.jpg",
+      "nome": "Cadillac Pizza & Bar"
+    },
+    {
+      "id": "123419",
+      "shopping_id": "166",
+      "loja_nome": "CHIQUINHO SORVETES",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "CHIQUINHO SORVETES"
+    },
+    {
+      "id": "123420",
+      "shopping_id": "166",
+      "loja_nome": "CHOCOLATES BRASIL CACAU",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "CHOCOLATES BRASIL CACAU"
+    },
+    {
+      "id": "123421",
+      "shopping_id": "166",
+      "loja_nome": "CINEART MULTIPLEX",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "CINEART MULTIPLEX"
+    },
+    {
+      "id": "123424",
+      "shopping_id": "166",
+      "loja_nome": "CLINICA NISHIMOTO",
+      "loja_logo": "202510271026202.png",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271026202.png",
+      "nome": "CLINICA NISHIMOTO"
+    },
+    {
+      "id": "123425",
+      "shopping_id": "166",
+      "loja_nome": "COISINHAS DE LUXO",
+      "loja_logo": "202510271027552.jpg",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271027552.jpg",
+      "nome": "COISINHAS DE LUXO"
+    },
+    {
+      "id": "123426",
+      "shopping_id": "166",
+      "loja_nome": "COLCHOES ORTOBOM",
+      "loja_logo": "202510271029402.png",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271029402.png",
+      "nome": "COLCHOES ORTOBOM"
+    },
+    {
+      "id": "123427",
+      "shopping_id": "166",
+      "loja_nome": "CORREIOS",
+      "loja_logo": "202510271031162.jpg",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271031162.jpg",
+      "nome": "CORREIOS"
+    },
+    {
+      "id": "126029",
+      "shopping_id": "166",
+      "loja_nome": "Coworking",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "Coworking"
+    },
+    {
+      "id": "123428",
+      "shopping_id": "166",
+      "loja_nome": "Croasonho",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "Croasonho"
+    },
+    {
+      "id": "123429",
+      "shopping_id": "166",
+      "loja_nome": "CROSSFIT",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "CROSSFIT"
+    },
+    {
+      "id": "123430",
+      "shopping_id": "166",
+      "loja_nome": "CVC Viagens",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "CVC Viagens"
+    },
+    {
+      "id": "88617",
+      "shopping_id": "166",
+      "loja_nome": "Deck Lounge - Bar e Restaurante",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "Deck Lounge - Bar e Restaurante"
+    },
+    {
+      "id": "123433",
+      "shopping_id": "166",
+      "loja_nome": "DESIRE DEPILAÇÃO A LASER",
+      "loja_logo": "202510271042532.png",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271042532.png",
+      "nome": "DESIRE DEPILAÇÃO A LASER"
+    },
+    {
+      "id": "123436",
+      "shopping_id": "166",
+      "loja_nome": "DROGARIAS ALIANÇA",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "DROGARIAS ALIANÇA"
+    },
+    {
+      "id": "123437",
+      "shopping_id": "166",
+      "loja_nome": "DUETTO MUSICAL",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "DUETTO MUSICAL"
+    },
+    {
+      "id": "106205",
+      "shopping_id": "166",
+      "loja_nome": "Gameday",
+      "loja_logo": "202401041429092.jpg",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202401041429092.jpg",
+      "nome": "Gameday"
+    },
+    {
+      "id": "123488",
+      "shopping_id": "166",
+      "loja_nome": "GASTROPUB THE CHRIS",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "GASTROPUB THE CHRIS"
+    },
+    {
+      "id": "123440",
+      "shopping_id": "166",
+      "loja_nome": "GOLF PLACAS",
+      "loja_logo": "202509051801081.jpg",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509051801081.jpg",
+      "nome": "GOLF PLACAS"
+    },
+    {
+      "id": "123441",
+      "shopping_id": "166",
+      "loja_nome": "GRILETTO",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "GRILETTO"
+    },
+    {
+      "id": "116703",
+      "shopping_id": "166",
+      "loja_nome": "Help Multas",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "Help Multas"
+    },
+    {
+      "id": "123443",
+      "shopping_id": "166",
+      "loja_nome": "IGREJA BATISTA DA LAGOINHA",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "IGREJA BATISTA DA LAGOINHA"
+    },
+    {
+      "id": "123445",
+      "shopping_id": "166",
+      "loja_nome": "KOMBI SUNSHINE",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "KOMBI SUNSHINE"
+    },
+    {
+      "id": "123446",
+      "shopping_id": "166",
+      "loja_nome": "LOJAS AMERICANAS",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "LOJAS AMERICANAS"
+    },
+    {
+      "id": "123447",
+      "shopping_id": "166",
+      "loja_nome": "LOTERIA - LOTÉRICA MONTE CARMO",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "LOTERIA - LOTÉRICA MONTE CARMO"
+    },
+    {
+      "id": "123449",
+      "shopping_id": "166",
+      "loja_nome": "MÃE E FILHA STORE",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "MÃE E FILHA STORE"
+    },
+    {
+      "id": "86908",
+      "shopping_id": "166",
+      "loja_nome": "Milanetto",
+      "loja_logo": "202207041112471.jpg",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202207041112471.jpg",
+      "nome": "Milanetto"
+    },
+    {
+      "id": "128504",
+      "shopping_id": "166",
+      "loja_nome": "Milkymoo",
+      "loja_logo": "202601160852432.png",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202601160852432.png",
+      "nome": "Milkymoo"
+    },
+    {
+      "id": "123453",
+      "shopping_id": "166",
+      "loja_nome": "MONTANA GRILL",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "MONTANA GRILL"
+    },
+    {
+      "id": "123467",
+      "shopping_id": "166",
+      "loja_nome": "Monte Carmo Combustíveis",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "Monte Carmo Combustíveis"
+    },
+    {
+      "id": "123454",
+      "shopping_id": "166",
+      "loja_nome": "MOREIRA CALÇADOS",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "MOREIRA CALÇADOS"
+    },
+    {
+      "id": "123455",
+      "shopping_id": "166",
+      "loja_nome": "MOTO PISTA",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "MOTO PISTA"
+    },
+    {
+      "id": "123456",
+      "shopping_id": "166",
+      "loja_nome": "MUNDO DA CRIANÇA",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "MUNDO DA CRIANÇA"
+    },
+    {
+      "id": "123459",
+      "shopping_id": "166",
+      "loja_nome": "NEW CASE",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "NEW CASE"
+    },
+    {
+      "id": "123460",
+      "shopping_id": "166",
+      "loja_nome": "O BOTICARIO",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "O BOTICARIO"
+    },
+    {
+      "id": "123461",
+      "shopping_id": "166",
+      "loja_nome": "OUSADIA",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "OUSADIA"
+    },
+    {
+      "id": "123462",
+      "shopping_id": "166",
+      "loja_nome": "PAÇAI 02",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "PAÇAI 02"
+    },
+    {
+      "id": "123465",
+      "shopping_id": "166",
+      "loja_nome": "PLANETA ANIMAL",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "PLANETA ANIMAL"
+    },
+    {
+      "id": "123468",
+      "shopping_id": "166",
+      "loja_nome": "PROCESSUS ADVOCACIA",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "PROCESSUS ADVOCACIA"
+    },
+    {
+      "id": "123450",
+      "shopping_id": "166",
+      "loja_nome": "QUIOSQUE MCDONALD&#39;S",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "QUIOSQUE MCDONALD&#39;S"
+    },
+    {
+      "id": "56223",
+      "shopping_id": "166",
+      "loja_nome": "Reino Mágico - Feira de Livros",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "Reino Mágico - Feira de Livros"
+    },
+    {
+      "id": "123473",
+      "shopping_id": "166",
+      "loja_nome": "RILIX COASTER",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "RILIX COASTER"
+    },
+    {
+      "id": "128506",
+      "shopping_id": "166",
+      "loja_nome": "Snackland (em breve)",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "Snackland (em breve)"
+    },
+    {
+      "id": "123477",
+      "shopping_id": "166",
+      "loja_nome": "SPAZIO VINTAGE",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "SPAZIO VINTAGE"
+    },
+    {
+      "id": "28780",
+      "shopping_id": "166",
+      "loja_nome": "SPORT ONE",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "SPORT ONE"
+    },
+    {
+      "id": "123478",
+      "shopping_id": "166",
+      "loja_nome": "START DIVERSOES",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "START DIVERSOES"
+    },
+    {
+      "id": "123481",
+      "shopping_id": "166",
+      "loja_nome": "SUBWAY",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "SUBWAY"
+    },
+    {
+      "id": "123482",
+      "shopping_id": "166",
+      "loja_nome": "SUPERMERCADOS BH",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "SUPERMERCADOS BH"
+    },
+    {
+      "id": "123485",
+      "shopping_id": "166",
+      "loja_nome": "SUSHINARA",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "SUSHINARA"
+    },
+    {
+      "id": "79580",
+      "shopping_id": "166",
+      "loja_nome": "TIC TAC",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "TIC TAC"
+    },
+    {
+      "id": "87468",
+      "shopping_id": "166",
+      "loja_nome": "Touti Cosmetics",
+      "loja_logo": "202207111155111.jpg",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202207111155111.jpg",
+      "nome": "Touti Cosmetics"
+    },
+    {
+      "id": "123139",
+      "shopping_id": "166",
+      "loja_nome": "TRADICAO DO CHEF",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "TRADICAO DO CHEF"
+    },
+    {
+      "id": "123493",
+      "shopping_id": "166",
+      "loja_nome": "TUBARAO ATACADAO",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "TUBARAO ATACADAO"
+    },
+    {
+      "id": "123494",
+      "shopping_id": "166",
+      "loja_nome": "UAI FOTOS E SERVICOS 1",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "UAI FOTOS E SERVICOS 1"
+    },
+    {
+      "id": "106161",
+      "shopping_id": "166",
+      "loja_nome": "Vitrine REC Studio",
+      "loja_logo": "202401021537381.png",
+      "loja_logo_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202401021537381.png",
+      "nome": "Vitrine REC Studio"
+    },
+    {
+      "id": "123495",
+      "shopping_id": "166",
+      "loja_nome": "VIVO",
+      "loja_logo": null,
+      "loja_logo_url": null,
+      "nome": "VIVO"
+    }
+  ]
+}
