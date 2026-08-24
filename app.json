@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "77df4b28-3b38-4645-9e29-4fe866dc3a7e"
+      }
+    },
+    "android": {
+      "package": "com.suporteti56.montecarmoshoppingapp"
+    }
+  }
+}
