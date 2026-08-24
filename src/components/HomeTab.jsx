@@ -30,17 +30,17 @@ export default function HomeTab({ userData, setActiveTab, onSelectCoupon }) {
 
   return (
     <div>
-      {/* 1. Status Card do Usuário */}
+      {/* 1. Status Card do Usuário com Visual Glassmórfico */}
       <div className="user-status-card">
         <div className="user-info">
           <h2>Olá, {userData?.name?.split(' ')[0] || 'Thierry'}!</h2>
           <div className="user-status-tag">
-            <span>Cliente Nível {userData?.level || 'Bronze'}</span>
+            <span>👑 Cliente Nível {userData?.level || 'Bronze'}</span>
           </div>
         </div>
 
         <div className="user-points">
-          <span className="points-value">{userData?.points || 100}</span>
+          <span className="points-value">{userData?.points !== undefined ? userData.points : 100}</span>
           <span className="points-label">Pontos Acumulados</span>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default function HomeTab({ userData, setActiveTab, onSelectCoupon }) {
       <div 
         className="promo-hero-card"
         style={{
-          backgroundImage: `linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.95) 100%), url(${realBannersData[activeBannerIndex]?.bgImage || 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'})`,
+          backgroundImage: `linear-gradient(180deg, rgba(15, 23, 42, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%), url(${realBannersData[activeBannerIndex]?.bgImage || 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           minHeight: '190px'
@@ -90,19 +90,19 @@ export default function HomeTab({ userData, setActiveTab, onSelectCoupon }) {
       </div>
 
       {/* 3. Seção Acesso Rápido */}
-      <div className="section-title">
-        <Sparkles size={18} color="var(--brand-primary)" />
-        <span>Acesso Rápido</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px', marginTop: '6px' }}>
+        <Sparkles size={18} color="#10B981" />
+        <span style={{ fontSize: '16px', fontWeight: '800', color: '#FFF' }}>Acesso Rápido</span>
       </div>
 
-      {/* 4. Grade de Acesso Rápido (6 Cards) */}
+      {/* 4. Grade de Acesso Rápido (6 Cards Estilizados) */}
       <div className="quick-actions-grid">
         {/* 1. Leia o Cupom Fiscal */}
         <div className="quick-action-card" onClick={() => setActiveTab('scan')}>
           <div className="quick-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10B981' }}>
             <QrCode size={24} />
           </div>
-          <span>Leia o cupom fiscal</span>
+          <span>Leia o cupom<br/>fiscal</span>
         </div>
 
         {/* 2. Prêmios & Cupons */}
@@ -110,7 +110,7 @@ export default function HomeTab({ userData, setActiveTab, onSelectCoupon }) {
           <div className="quick-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#F59E0B' }}>
             <Ticket size={24} />
           </div>
-          <span>Prêmios & Cupons</span>
+          <span>Prêmios &<br/>Cupons</span>
         </div>
 
         {/* 3. Indique Amigos */}
@@ -118,7 +118,7 @@ export default function HomeTab({ userData, setActiveTab, onSelectCoupon }) {
           <div className="quick-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#6366F1' }}>
             <Share2 size={24} />
           </div>
-          <span>Indique Amigos</span>
+          <span>Indique<br/>Amigos</span>
         </div>
 
         {/* 4. 64 Lojas */}
@@ -126,7 +126,7 @@ export default function HomeTab({ userData, setActiveTab, onSelectCoupon }) {
           <div className="quick-icon" style={{ background: 'rgba(6, 182, 212, 0.15)', color: '#06B6D4' }}>
             <Store size={24} />
           </div>
-          <span>64 Lojas & Serviços</span>
+          <span>64 Lojas &<br/>Serviços</span>
         </div>
 
         {/* 5. Cinema Cineart (Redirecionamento Oficial) */}
@@ -134,7 +134,7 @@ export default function HomeTab({ userData, setActiveTab, onSelectCoupon }) {
           <div className="quick-icon" style={{ background: 'rgba(236, 72, 153, 0.15)', color: '#EC4899' }}>
             <Film size={24} />
           </div>
-          <span>Cinema Cineart ↗</span>
+          <span>Cinema<br/>Cineart ↗</span>
         </div>
 
         {/* 6. Estacionamento Zul+ (Redirecionamento Oficial) */}
@@ -142,7 +142,7 @@ export default function HomeTab({ userData, setActiveTab, onSelectCoupon }) {
           <div className="quick-icon" style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#3B82F6' }}>
             <Car size={24} />
           </div>
-          <span>Estacionamento ↗</span>
+          <span>Estacionamento<br/>Zul+ ↗</span>
         </div>
       </div>
     </div>
