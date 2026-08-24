@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from './supabase';
 import { initialUserData, initialReceiptsData, notificationsData } from '../data/mockData';
+import { cleanCPF } from '../utils/cpfValidator';
 
 const STORAGE_KEYS = {
   USER: 'mcs_user_profile',
@@ -28,6 +29,34 @@ function setLocalItem(key, value) {
 
 export const dataService = {
   // ==========================================
+  // VALIDAÇÃO DE CPF ÚNICO NO CADASTRO
+  // ==========================================
+  async checkCpfExists(rawCpf) {
+    const cleaned = cleanCPF(rawCpf);
+    if (!cleaned || cleaned.length !== 11) return false;
+
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, email, cpf')
+          .eq('cpf', cleaned)
+          .maybeSingle();
+
+        if (data && !error) return true;
+      } catch (e) {
+        console.warn('Erro ao checar CPF no Supabase:', e.message);
+      }
+    }
+
+    const current = getLocalItem(STORAGE_KEYS.USER, null);
+    if (current?.cpf && cleanCPF(current.cpf) === cleaned) {
+      return true;
+    }
+    return false;
+  },
+
+  // ==========================================
   // PERFIL DO USUÁRIO
   // ==========================================
   async getUserProfile() {
@@ -45,9 +74,13 @@ export const dataService = {
   async updateUserProfile(updates) {
     if (isSupabaseConfigured && updates.email) {
       try {
+        const cleanUpdates = {
+          ...updates,
+          cpf: cleanCPF(updates.cpf) || updates.cpf
+        };
         const { data, error } = await supabase
           .from('profiles')
-          .upsert([updates], { onConflict: 'email' })
+          .upsert([cleanUpdates], { onConflict: 'email' })
           .select()
           .single();
         if (!error && data) return data;
@@ -152,7 +185,7 @@ export const dataService = {
   },
 
   // =========================================================================
-  // CUPONS & PROMOÇÕES CADASTRADAS PELOS LOJISTAS NO BANCO DE DADOS
+  // CUPONS & PROMOÇÕES
   // =========================================================================
   async getCoupons() {
     if (isSupabaseConfigured) {
@@ -176,11 +209,10 @@ export const dataService = {
     return local;
   },
 
-  // Cadastra um novo cupom no Supabase quando o Lojista salva
   async addCoupon(couponData) {
     const cleanPayload = {
       store_name: couponData.store_name,
-      store_category: couponData.store_category || 'Lojas & Serviços',
+      store_category: couponData.store_category || 'Moda',
       title: couponData.title,
       description: couponData.description,
       discount: couponData.discount,
@@ -219,7 +251,6 @@ export const dataService = {
     return localObj;
   },
 
-  // Remove ou desativa um cupom do lojista no Supabase
   async deleteCoupon(couponId) {
     if (isSupabaseConfigured) {
       try {
@@ -238,8 +269,46 @@ export const dataService = {
     return updated;
   },
 
+  // =========================================================================
+  // REGRA DE RESGATE: MÁXIMO DE 1 RESGATE POR CPF
+  // =========================================================================
+  async hasUserRedeemedCoupon(couponId, rawCpf) {
+    const cpf = cleanCPF(rawCpf);
+    if (!cpf) return false;
+
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from('coupon_redemptions')
+          .select('id')
+          .eq('coupon_id', couponId)
+          .eq('customer_cpf', cpf)
+          .maybeSingle();
+
+        if (data && !error) return true;
+      } catch (e) {
+        console.warn('Erro ao checar resgates por CPF:', e.message);
+      }
+    }
+
+    const redemptions = getLocalItem(STORAGE_KEYS.REDEMPTIONS, []);
+    return redemptions.some(r => r.couponId === couponId && cleanCPF(r.customerCpf) === cpf);
+  },
+
   async redeemCoupon(coupon) {
     const user = await this.getUserProfile();
+    const userCpf = cleanCPF(user?.cpf);
+
+    if (!userCpf || userCpf.length !== 11) {
+      throw new Error('CPF não cadastrado. Atualize seus dados com seu CPF para resgatar cupons.');
+    }
+
+    // Validação estrita: 1 Cupom por CPF
+    const alreadyRedeemed = await this.hasUserRedeemedCoupon(coupon.id, userCpf);
+    if (alreadyRedeemed) {
+      throw new Error('Você já resgatou este cupom com seu CPF. Limite de 1 resgate por CPF atingido.');
+    }
+
     const pointsRequired = coupon.points_required !== undefined ? coupon.points_required : (coupon.pointsRequired || 0);
     const isFree = coupon.is_free || pointsRequired === 0;
 
@@ -262,6 +331,7 @@ export const dataService = {
       storeName: coupon.store_name || coupon.storeName,
       title: coupon.title,
       voucherCode: voucherCode,
+      customerCpf: userCpf,
       status: 'Ativo',
       redeemedAt: new Date().toISOString()
     };
@@ -274,6 +344,7 @@ export const dataService = {
           voucher_code: voucherCode,
           customer_name: user.name || 'Cliente Monte Carmo',
           customer_email: user.email,
+          customer_cpf: userCpf,
           status: 'Ativo'
         }]);
       } catch (e) {

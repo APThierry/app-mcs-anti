@@ -18,6 +18,7 @@ import { supabase, isSupabaseConfigured } from './services/supabase';
 import { sefazParser } from './services/sefazParser';
 import { notificationService } from './services/notificationService';
 import { geminiService } from './services/geminiService';
+import { formatCPF, validateCPF, cleanCPF } from './utils/cpfValidator';
 import { initialUserData, initialReceiptsData, notificationsData } from './data/mockData';
 import { Smartphone, Monitor, ArrowLeft, LogIn, UserPlus, Sparkles, Store, ShieldCheck, MessageCircle } from 'lucide-react';
 
@@ -40,6 +41,7 @@ export default function App() {
   const [authPassword, setAuthPassword] = useState('');
   const [authName, setAuthName] = useState('');
   const [authPhone, setAuthPhone] = useState('');
+  const [authCpf, setAuthCpf] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
   // Modals state
@@ -78,15 +80,28 @@ export default function App() {
     e.preventDefault();
     if (!authEmail || !authPassword) return;
 
-    setAuthLoading(true);
-
     if (isRegisterMode) {
+      if (!validateCPF(authCpf)) {
+        alert('Por favor, informe um CPF válido com 11 dígitos.');
+        return;
+      }
+
+      setAuthLoading(true);
+
+      // Checa se o CPF já está cadastrado no banco de dados
+      const cpfExists = await dataService.checkCpfExists(authCpf);
+      if (cpfExists) {
+        alert('⚠️ Este CPF já está cadastrado no Monte Carmo Shopping! Cada cliente só pode ter 1 conta por CPF. Por favor, faça login com seu e-mail e senha.');
+        setAuthLoading(false);
+        return;
+      }
+
       if (isSupabaseConfigured) {
         const { data, error } = await supabase.auth.signUp({
           email: authEmail.trim(),
           password: authPassword,
           options: {
-            data: { name: authName, phone: authPhone }
+            data: { name: authName, phone: authPhone, cpf: cleanCPF(authCpf) }
           }
         });
 
@@ -101,6 +116,7 @@ export default function App() {
       const newUser = {
         name: authName || 'Cliente Monte Carmo',
         email: authEmail,
+        cpf: cleanCPF(authCpf),
         phone: authPhone || '(31) 98765-4321',
         points: 100,
         level: 'Bronze',
@@ -111,8 +127,9 @@ export default function App() {
       setUserData(newUser);
       setIsLoggedIn(true);
       notificationService.sendPushNotification(null, '🎉 Bem-vindo ao Monte Carmo!', 'Você ganhou 100 pontos de boas-vindas.');
-      alert('🎉 Cadastro realizado! Você ganhou 100 pontos de boas-vindas.');
+      alert('🎉 Cadastro realizado com sucesso! Você ganhou 100 pontos de boas-vindas.');
     } else {
+      setAuthLoading(true);
       if (isSupabaseConfigured) {
         const { error } = await supabase.auth.signInWithPassword({
           email: authEmail.trim(),
@@ -127,6 +144,7 @@ export default function App() {
       const user = existingUser?.email ? existingUser : {
         name: authEmail.split('@')[0],
         email: authEmail,
+        cpf: cleanCPF(authCpf) || '12345678900',
         phone: '(31) 98765-4321',
         points: 250,
         level: 'Prata',
@@ -290,6 +308,18 @@ export default function App() {
                         />
                       </div>
                       <div>
+                        <label style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)' }}>CPF (Apenas 1 cadastro por CPF)</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="000.000.000-00"
+                          maxLength={14}
+                          value={authCpf}
+                          onChange={(e) => setAuthCpf(formatCPF(e.target.value))}
+                          style={{ width: '100%', padding: '10px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border-glass)', borderRadius: '10px', color: '#fff', fontSize: '13px', outline: 'none', marginTop: '4px' }}
+                        />
+                      </div>
+                      <div>
                         <label style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)' }}>WhatsApp / Telefone</label>
                         <input
                           type="text"
@@ -374,6 +404,7 @@ export default function App() {
                     </button>
                     <h3 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '12px' }}>Meus Dados Cadastrais</h3>
                     <p style={{ fontSize: '13px', marginBottom: '6px' }}><strong>Nome:</strong> {userData?.name}</p>
+                    <p style={{ fontSize: '13px', marginBottom: '6px' }}><strong>CPF:</strong> {formatCPF(userData?.cpf) || 'Não informado'}</p>
                     <p style={{ fontSize: '13px', marginBottom: '6px' }}><strong>E-mail:</strong> {userData?.email}</p>
                     <p style={{ fontSize: '13px', marginBottom: '6px' }}><strong>Telefone:</strong> {userData?.phone}</p>
                     <p style={{ fontSize: '13px', marginBottom: '6px' }}><strong>Nível:</strong> 👑 {userData?.level}</p>

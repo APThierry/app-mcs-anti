@@ -26,12 +26,13 @@ CREATE TABLE IF NOT EXISTS public.coupons (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 3. Tabela de Perfis de Usuários
+-- 3. Tabela de Perfis de Usuários (1 LOGIN POR CPF ÚNICO)
 CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID,
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
+    cpf VARCHAR(14) UNIQUE,
     phone TEXT,
     points INTEGER DEFAULT 100 CHECK (points >= 0),
     level TEXT DEFAULT 'Bronze' CHECK (level IN ('Bronze', 'Prata', 'Ouro', 'Diamante')),
@@ -52,7 +53,7 @@ CREATE TABLE IF NOT EXISTS public.receipts (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 5. Tabela de Resgates de Cupons (Queima no Caixa)
+-- 5. Tabela de Resgates de Cupons (REGRA: 1 CUPOM POR CPF)
 CREATE TABLE IF NOT EXISTS public.coupon_redemptions (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     coupon_id UUID REFERENCES public.coupons(id) ON DELETE CASCADE,
@@ -60,12 +61,14 @@ CREATE TABLE IF NOT EXISTS public.coupon_redemptions (
     voucher_code VARCHAR(30) NOT NULL,
     customer_name TEXT,
     customer_email TEXT,
+    customer_cpf VARCHAR(14) NOT NULL,
     status TEXT DEFAULT 'Ativo' CHECK (status IN ('Ativo', 'Utilizado', 'Expirado')),
     redeemed_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
-    used_at TIMESTAMP WITH TIME ZONE
+    used_at TIMESTAMP WITH TIME ZONE,
+    CONSTRAINT unique_coupon_per_cpf UNIQUE (coupon_id, customer_cpf)
 );
 
--- 6. Tabela de Lojas do Shopping
+-- 6. Tabela de Lojas do Shopping (69 Lojas Reais sem Repetição)
 CREATE TABLE IF NOT EXISTS public.stores (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -103,21 +106,20 @@ ALTER TABLE public.coupon_redemptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.stores ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.movies ENABLE ROW LEVEL SECURITY;
 
--- Limpa políticas antigas
-DROP POLICY IF EXISTS "Public access to coupons" ON public.coupons;
-DROP POLICY IF EXISTS "Public access to profiles" ON public.profiles;
-DROP POLICY IF EXISTS "Public access to receipts" ON public.receipts;
-DROP POLICY IF EXISTS "Public access to redemptions" ON public.coupon_redemptions;
-DROP POLICY IF EXISTS "Public access to stores" ON public.stores;
-DROP POLICY IF EXISTS "Public access to movies" ON public.movies;
+DROP POLICY IF EXISTS "Public Full Access Coupons" ON public.coupons;
+CREATE POLICY "Public Full Access Coupons" ON public.coupons FOR ALL USING (true) WITH CHECK (true);
 
--- Cria políticas universais públicas (Leitura, Inserção, Atualização e Deleção)
-CREATE POLICY "Public access to coupons" ON public.coupons FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Public access to profiles" ON public.profiles FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Public access to receipts" ON public.receipts FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Public access to redemptions" ON public.coupon_redemptions FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Public access to stores" ON public.stores FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Public access to movies" ON public.movies FOR ALL USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Public Full Access Profiles" ON public.profiles;
+CREATE POLICY "Public Full Access Profiles" ON public.profiles FOR ALL USING (true) WITH CHECK (true);
 
--- Notifica sucesso
-SELECT 'Banco de Dados do Monte Carmo Shopping configurado com sucesso e 100% conectado!' AS status;
+DROP POLICY IF EXISTS "Public Full Access Receipts" ON public.receipts;
+CREATE POLICY "Public Full Access Receipts" ON public.receipts FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public Full Access Redemptions" ON public.coupon_redemptions;
+CREATE POLICY "Public Full Access Redemptions" ON public.coupon_redemptions FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public Full Access Stores" ON public.stores;
+CREATE POLICY "Public Full Access Stores" ON public.stores FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public Full Access Movies" ON public.movies;
+CREATE POLICY "Public Full Access Movies" ON public.movies FOR ALL USING (true) WITH CHECK (true);

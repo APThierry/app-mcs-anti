@@ -1,42 +1,48 @@
 import React, { useState } from 'react';
-import { X, QrCode, Check, Copy, Clock, MapPin, Ticket } from 'lucide-react';
+import { X, QrCode, Check, Copy, Clock, MapPin, Ticket, AlertCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { dataService } from '../services/dataService';
 import { notificationService } from '../services/notificationService';
 
 export default function CouponModal({ coupon, onClose, userData, setUserData }) {
   const [isRedeemed, setIsRedeemed] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [generatedVoucher, setGeneratedVoucher] = useState('');
 
   if (!coupon) return null;
 
   const storeName = coupon.store_name || coupon.storeName || 'Monte Carmo Shopping';
   const pointsRequired = coupon.points_required !== undefined ? coupon.points_required : (coupon.pointsRequired || 0);
   const isFree = coupon.is_free || pointsRequired === 0;
-  const couponCode = coupon.code_prefix || coupon.code || 'MC-PROMO';
+  const couponCode = generatedVoucher || coupon.code_prefix || coupon.code || 'MC-PROMO';
   const expiryDate = coupon.expiry_date || coupon.expiryDate || '2026-12-31';
   const badgeColor = coupon.badge_color || coupon.badgeColor || '#10B981';
 
-  const handleConfirmRedeem = () => {
-    if (!isFree && (userData?.points || 0) < pointsRequired) {
-      alert(`Você precisa de ${pointsRequired} pontos para resgatar este cupom. Seu saldo atual é de ${userData?.points || 0} pts.`);
-      return;
+  const handleConfirmRedeem = async () => {
+    setErrorMessage('');
+    try {
+      const redemption = await dataService.redeemCoupon(coupon);
+      setGeneratedVoucher(redemption.voucherCode);
+
+      if (!isFree && setUserData) {
+        setUserData(prev => ({
+          ...prev,
+          points: Math.max(0, (prev?.points || 0) - pointsRequired)
+        }));
+      }
+
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+
+      notificationService.notifyCouponRedeemed(storeName, coupon.discount);
+      setIsRedeemed(true);
+    } catch (err) {
+      setErrorMessage(err.message || 'Não foi possível resgatar o cupom.');
     }
-
-    if (!isFree && setUserData) {
-      setUserData(prev => ({
-        ...prev,
-        points: (prev?.points || 0) - pointsRequired
-      }));
-    }
-
-    confetti({
-      particleCount: 120,
-      spread: 80,
-      origin: { y: 0.6 }
-    });
-
-    notificationService.notifyCouponRedeemed(storeName, coupon.discount);
-    setIsRedeemed(true);
   };
 
   const handleCopyCode = () => {
@@ -69,10 +75,20 @@ export default function CouponModal({ coupon, onClose, userData, setUserData }) 
           <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: '1.4' }}>
             {coupon.description}
           </p>
+          <div style={{ fontSize: '11px', color: '#F59E0B', fontWeight: '700', marginTop: '6px' }}>
+            ℹ️ Regra: Limite de 1 resgate por CPF
+          </div>
         </div>
 
+        {errorMessage && (
+          <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', borderRadius: '12px', padding: '10px 12px', color: '#EF4444', fontSize: '12px', fontWeight: '700', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <AlertCircle size={18} />
+            <span>{errorMessage}</span>
+          </div>
+        )}
+
         {!isRedeemed ? (
-          <div style={{ marginTop: '20px' }}>
+          <div style={{ marginTop: '10px' }}>
             <div className="glass-card" style={{ marginBottom: '16px', background: 'rgba(245, 158, 11, 0.1)', borderColor: 'rgba(245, 158, 11, 0.3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Custo do Resgate</div>
@@ -89,7 +105,7 @@ export default function CouponModal({ coupon, onClose, userData, setUserData }) 
             </div>
 
             <button className="btn-primary-action" onClick={handleConfirmRedeem}>
-              <Ticket size={18} /> Confirmar Resgate
+              <Ticket size={18} /> Confirmar Resgate (1 por CPF)
             </button>
           </div>
         ) : (
@@ -98,7 +114,6 @@ export default function CouponModal({ coupon, onClose, userData, setUserData }) 
               <Check size={16} /> Cupom Ativado com Sucesso!
             </div>
 
-            {/* Simulated QR Code Box */}
             <div className="qr-code-box">
               <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '700', marginBottom: '8px' }}>
                 Apresente este QR Code no caixa da loja:

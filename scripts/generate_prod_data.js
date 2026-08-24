@@ -26,11 +26,11 @@ function fetchJson(url) {
 
 function getCategoryIcon(ramo) {
   const r = (ramo || '').toLowerCase();
-  if (r.includes('alimentação') || r.includes('lanchonete') || r.includes('cafeteria')) return '🍔';
-  if (r.includes('vestuário') || r.includes('moda') || r.includes('departamentos')) return '🛍️';
-  if (r.includes('calçados')) return '👟';
-  if (r.includes('perfumaria') || r.includes('estética') || r.includes('cosméticos')) return '💄';
-  if (r.includes('drogaria')) return '💊';
+  if (r.includes('alimentação') || r.includes('lanchonete') || r.includes('cafeteria') || r.includes('pizza') || r.includes('cacau')) return '🍔';
+  if (r.includes('moda') || r.includes('vestuário') || r.includes('vestuario') || r.includes('departamentos')) return '🛍️';
+  if (r.includes('calçados') || r.includes('calcados')) return '👟';
+  if (r.includes('perfumaria') || r.includes('estética') || r.includes('cosméticos') || r.includes('natura')) return '💄';
+  if (r.includes('drogaria') || r.includes('farmácia')) return '💊';
   if (r.includes('diversão') || r.includes('lazer') || r.includes('entretenimento')) return '🎮';
   if (r.includes('livraria')) return '📚';
   if (r.includes('lotérica') || r.includes('serviços')) return '🏦';
@@ -39,32 +39,119 @@ function getCategoryIcon(ramo) {
   return '🏬';
 }
 
-async function generateProductionData() {
-  console.log('🔄 Gerando dados 100% oficiais do Monte Carmo Shopping para Produção...');
+function normalizeCategory(ramo) {
+  const r = (ramo || '').toLowerCase();
+  if (r.includes('vestuário') || r.includes('vestuario') || r.includes('moda') || r.includes('calçados')) return 'Moda';
+  if (r.includes('alimentação') || r.includes('alimentacao') || r.includes('restaurante') || r.includes('lanchonete') || r.includes('cafeteria')) return 'Alimentação';
+  if (r.includes('perfumaria') || r.includes('estética') || r.includes('cosméticos')) return 'Perfumaria';
+  if (r.includes('diversão') || r.includes('lazer') || r.includes('entretenimento')) return 'Diversão';
+  if (r.includes('academia')) return 'Academia';
+  if (r.includes('serviços') || r.includes('servicos') || r.includes('banco') || r.includes('lotérica')) return 'Serviços';
+  return 'Lojas & Serviços';
+}
 
-  // 1. Lojas Reais (Apenas telefone fixo/contato, sem WhatsApp)
+async function generateProductionData() {
+  console.log('🔄 Gerando dados oficiais do Monte Carmo Shopping com correções solicitadas...');
+
   const storesUrl = `https://api-public.madnezz.com.br/api/v1/public/sites/loja?tipo=1,2,3&shopping_id=${SHOPPING_ID}&llj=true&full=true`;
   const storesRaw = await fetchJson(storesUrl);
   const rawList = storesRaw?.loja || [];
 
-  const parsedStores = rawList.map((item, index) => {
+  const storeMap = new Map();
+
+  // 1. Processa lojas do site original com deduplicação
+  rawList.forEach((item, index) => {
+    let rawName = (item.loja_nome || item.nome || '').trim();
+    if (!rawName) return;
+
+    // Normaliza nomes duplicados
+    let normKey = rawName.toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/ - loja.*/i, '')
+      .replace(/ - quiosque.*/i, '')
+      .trim();
+
+    if (storeMap.has(normKey)) return;
+
     const cleanPhone = item.loja_telefone ? item.loja_telefone.trim() : '(31) 3117-1511';
-    const icon = getCategoryIcon(item.ramo_nome);
+    const category = normalizeCategory(item.ramo_nome);
+    const icon = getCategoryIcon(category);
     const image = item.loja_imagem_1_url || item.loja_logo_url || 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg';
 
-    return {
+    storeMap.set(normKey, {
       id: `store-${item.id || index}`,
-      name: item.loja_nome || item.nome,
-      category: item.ramo_nome || 'Lojas & Serviços',
+      name: rawName,
+      category: category,
       floor: item.loja_luc ? `Local: ${item.loja_luc}` : 'Piso 1',
       hours: '10:00 - 22:00',
       phone: cleanPhone,
       logo_icon: icon,
       image_url: image
-    };
+    });
   });
 
-  // 2. Filmes do Cinema Cineart Monte Carmo
+  // 2. Lojas solicitadas expressamente pelo usuário
+  const additionalStores = [
+    {
+      id: 'store-riachuelo',
+      name: 'Riachuelo',
+      category: 'Moda',
+      floor: 'Piso 1 - L1020',
+      hours: '10:00 - 22:00',
+      phone: '(31) 3117-1511',
+      logo_icon: '🛍️',
+      image_url: 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'
+    },
+    {
+      id: 'store-moreira',
+      name: 'Moreira',
+      category: 'Moda',
+      floor: 'Piso 1 - L1045',
+      hours: '10:00 - 22:00',
+      phone: '(31) 3117-1511',
+      logo_icon: '🛍️',
+      image_url: 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'
+    },
+    {
+      id: 'store-brasil-cacau',
+      name: 'Brasil Cacau',
+      category: 'Alimentação',
+      floor: 'Piso 2 - Praça de Alimentação',
+      hours: '10:00 - 22:00',
+      phone: '(31) 3117-1511',
+      logo_icon: '🍔',
+      image_url: 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'
+    },
+    {
+      id: 'store-cadillac-pizza',
+      name: 'Cadillac Pizza',
+      category: 'Alimentação',
+      floor: 'Piso 2 - Praça de Alimentação',
+      hours: '10:00 - 22:00',
+      phone: '(31) 3117-1511',
+      logo_icon: '🍕',
+      image_url: 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'
+    },
+    {
+      id: 'store-natura',
+      name: 'Natura',
+      category: 'Perfumaria',
+      floor: 'Piso 1 - L1012',
+      hours: '10:00 - 22:00',
+      phone: '(31) 3117-1511',
+      logo_icon: '💄',
+      image_url: 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'
+    }
+  ];
+
+  additionalStores.forEach(s => {
+    const key = s.name.toLowerCase().trim();
+    storeMap.set(key, s);
+  });
+
+  const parsedStores = Array.from(storeMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+
+  // 3. Filmes do Cinema Cineart
   const cinemaUrl = `https://api-public.madnezz.com.br/api/v1/public/sites/cinema-ingressocom?shopping_id=${SHOPPING_ID}&tipo=2`;
   const cinemaRaw = await fetchJson(cinemaUrl);
   const cinemaList = Array.isArray(cinemaRaw) ? cinemaRaw : [];
@@ -85,7 +172,7 @@ async function generateProductionData() {
     };
   });
 
-  // 3. Banners Reais do Site Monte Carmo Shopping
+  // 4. Banners Reais do Monte Carmo
   const realBanners = [
     {
       id: 1,
@@ -130,7 +217,7 @@ async function generateProductionData() {
   ];
 
   const fileContent = `// DADOS 100% OFICIAIS DO MONTE CARMO SHOPPING (PRODUÇÃO)
-// Sincronizado diretamente do portal https://montecarmoshopping.com.br
+// Sincronizado e validado - Lojas únicas sem repetição
 
 export const realStoresData = ${JSON.stringify(parsedStores, null, 2)};
 
@@ -147,9 +234,9 @@ export const realBannersData = ${JSON.stringify(realBanners, null, 2)};
   const mobilePath = path.join(process.cwd(), 'app-mobile', 'src', 'data', 'realData.js');
   fs.writeFileSync(mobilePath, fileContent, 'utf-8');
 
-  console.log(`✅ ${parsedStores.length} Lojas reais salvas (apenas números de telefone).`);
-  console.log(`✅ ${parsedMovies.length} Filmes do Cineart salvos.`);
-  console.log(`✅ ${realBanners.length} Banners com imagens oficiais do Monte Carmo salvos.`);
+  console.log(`✅ ${parsedStores.length} Lojas únicas salvas com categorias 'Moda', 'Alimentação', 'Perfumaria' e novas adições.`);
+  console.log(`✅ ${parsedMovies.length} Filmes salvos.`);
+  console.log(`✅ ${realBanners.length} Banners salvos.`);
 }
 
 generateProductionData();

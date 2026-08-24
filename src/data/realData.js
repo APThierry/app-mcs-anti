@@ -1,5 +1,5 @@
 // DADOS 100% OFICIAIS DO MONTE CARMO SHOPPING (PRODUÇÃO)
-// Sincronizado diretamente do portal https://montecarmoshopping.com.br
+// Sincronizado e validado - Lojas únicas sem repetição
 
 export const realStoresData = [
   {
@@ -35,17 +35,17 @@ export const realStoresData = [
   {
     "id": "store-35476",
     "name": "Berry Balas",
-    "category": "Artigos Diversos",
+    "category": "Lojas & Serviços",
     "floor": "Local: Q-31",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99934-7532",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/201906031409101.jpg"
   },
   {
     "id": "store-123405",
     "name": "BIG TOYS",
-    "category": "Lazer",
+    "category": "Diversão",
     "floor": "Local: L1066",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
@@ -55,12 +55,22 @@ export const realStoresData = [
   {
     "id": "store-123408",
     "name": "BoliXe Monte Carmo - Boliche",
-    "category": "Lazer",
+    "category": "Diversão",
     "floor": "Local: A08",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
     "logo_icon": "🎮",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509080948231.png"
+  },
+  {
+    "id": "store-brasil-cacau",
+    "name": "Brasil Cacau",
+    "category": "Alimentação",
+    "floor": "Piso 2 - Praça de Alimentação",
+    "hours": "10:00 - 22:00",
+    "phone": "(31) 3117-1511",
+    "logo_icon": "🍔",
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
     "id": "store-123410",
@@ -75,12 +85,22 @@ export const realStoresData = [
   {
     "id": "store-123412",
     "name": "CACAU SHOW",
-    "category": "Alimentação, Cafeteria",
+    "category": "Alimentação",
     "floor": "Local: L1030",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99574-2023",
     "logo_icon": "🍔",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202602201652571.jpg"
+  },
+  {
+    "id": "store-cadillac-pizza",
+    "name": "Cadillac Pizza",
+    "category": "Alimentação",
+    "floor": "Piso 2 - Praça de Alimentação",
+    "hours": "10:00 - 22:00",
+    "phone": "(31) 3117-1511",
+    "logo_icon": "🍕",
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
     "id": "store-123413",
@@ -89,7 +109,7 @@ export const realStoresData = [
     "floor": "Local: LS-1007",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99603-3268",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202603311607491.PNG"
   },
   {
@@ -109,7 +129,7 @@ export const realStoresData = [
     "floor": "Local: L1075",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
@@ -125,7 +145,7 @@ export const realStoresData = [
   {
     "id": "store-123424",
     "name": "CLINICA NISHIMOTO",
-    "category": "Estética",
+    "category": "Perfumaria",
     "floor": "Local: L1116",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
@@ -135,27 +155,27 @@ export const realStoresData = [
   {
     "id": "store-123425",
     "name": "COISINHAS DE LUXO",
-    "category": "Artigos Diversos",
+    "category": "Lojas & Serviços",
     "floor": "Local: L1009",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99293-2725",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271027551.jpg"
   },
   {
     "id": "store-123426",
     "name": "COLCHOES ORTOBOM",
-    "category": "Venda de Colchões",
+    "category": "Lojas & Serviços",
     "floor": "Local: L1047",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3397-6652 e (31)98710-5239",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271029401.jpg"
   },
   {
     "id": "store-123427",
     "name": "CORREIOS",
-    "category": "Serviços",
+    "category": "Lojas & Serviços",
     "floor": "Local: L1008",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3431-1601",
@@ -165,11 +185,11 @@ export const realStoresData = [
   {
     "id": "store-126029",
     "name": "Coworking",
-    "category": "Espaço de Trabalho Compartilhado",
+    "category": "Lojas & Serviços",
     "floor": "Local: L-1108",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509151624411.png"
   },
   {
@@ -195,11 +215,11 @@ export const realStoresData = [
   {
     "id": "store-123430",
     "name": "CVC Viagens",
-    "category": "Turismo",
+    "category": "Lojas & Serviços",
     "floor": "Local: L1005",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "✈️",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271038491.jpg"
   },
   {
@@ -215,7 +235,7 @@ export const realStoresData = [
   {
     "id": "store-123433",
     "name": "DESIRE DEPILAÇÃO A LASER",
-    "category": "Serviços Estéticos, Estética",
+    "category": "Perfumaria",
     "floor": "Local: L1065",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99597-9002",
@@ -225,31 +245,31 @@ export const realStoresData = [
   {
     "id": "store-123436",
     "name": "DROGARIAS ALIANÇA",
-    "category": "Drogaria",
+    "category": "Lojas & Serviços",
     "floor": "Local: L1001",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3596-7380",
-    "logo_icon": "💊",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271047411.jpg"
   },
   {
     "id": "store-123437",
     "name": "DUETTO MUSICAL",
-    "category": "Instrumentos Musicais",
+    "category": "Lojas & Serviços",
     "floor": "Local: L1138",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509080956411.png"
   },
   {
     "id": "store-106205",
     "name": "Gameday",
-    "category": "Loja de Games",
+    "category": "Lojas & Serviços",
     "floor": "Local: L-1069",
     "hours": "10:00 - 22:00",
     "phone": "(31) 98350-9094",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202401041429081.jpg"
   },
   {
@@ -265,11 +285,11 @@ export const realStoresData = [
   {
     "id": "store-123440",
     "name": "GOLF PLACAS",
-    "category": "Emplacamento de Veículos",
+    "category": "Lojas & Serviços",
     "floor": "Local: ES0001",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202509051801081.jpg"
   },
   {
@@ -295,11 +315,11 @@ export const realStoresData = [
   {
     "id": "store-123443",
     "name": "IGREJA BATISTA DA LAGOINHA",
-    "category": "Igreja",
+    "category": "Lojas & Serviços",
     "floor": "Local: A05",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271050101.jpg"
   },
   {
@@ -315,17 +335,17 @@ export const realStoresData = [
   {
     "id": "store-123446",
     "name": "LOJAS AMERICANAS",
-    "category": "Loja de Departamentos",
+    "category": "Lojas & Serviços",
     "floor": "Local: A02",
     "hours": "10:00 - 22:00",
     "phone": "(31) 9 8427-5040",
-    "logo_icon": "🛍️",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271055001.jpg"
   },
   {
     "id": "store-123447",
     "name": "LOTERIA - LOTÉRICA MONTE CARMO",
-    "category": "Lotérica",
+    "category": "Serviços",
     "floor": "Local: L1067",
     "hours": "10:00 - 22:00",
     "phone": "(31) 99735-9994",
@@ -335,7 +355,7 @@ export const realStoresData = [
   {
     "id": "store-123449",
     "name": "MÃE E FILHA STORE",
-    "category": "Vestuário Feminino",
+    "category": "Moda",
     "floor": "Local: L1076",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
@@ -369,7 +389,7 @@ export const realStoresData = [
     "floor": "Local: FF2008",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
@@ -379,17 +399,27 @@ export const realStoresData = [
     "floor": "Local: ES003",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
+  },
+  {
+    "id": "store-moreira",
+    "name": "Moreira",
+    "category": "Moda",
+    "floor": "Piso 1 - L1045",
+    "hours": "10:00 - 22:00",
+    "phone": "(31) 3117-1511",
+    "logo_icon": "🛍️",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
     "id": "store-123454",
     "name": "MOREIRA CALÇADOS",
-    "category": "Calçados",
+    "category": "Moda",
     "floor": "Local: L1117",
     "hours": "10:00 - 22:00",
     "phone": "3118-8778",
-    "logo_icon": "👟",
+    "logo_icon": "🛍️",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271100231.jpg"
   },
   {
@@ -413,13 +443,23 @@ export const realStoresData = [
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271103321.jpg"
   },
   {
+    "id": "store-natura",
+    "name": "Natura",
+    "category": "Perfumaria",
+    "floor": "Piso 1 - L1012",
+    "hours": "10:00 - 22:00",
+    "phone": "(31) 3117-1511",
+    "logo_icon": "💄",
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
+  },
+  {
     "id": "store-123459",
     "name": "NEW CASE",
-    "category": "Telefonia Celular",
+    "category": "Lojas & Serviços",
     "floor": "Local: Q26",
     "hours": "10:00 - 22:00",
     "phone": "(31) 9 9308-6134",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271106251.jpg"
   },
   {
@@ -435,7 +475,7 @@ export const realStoresData = [
   {
     "id": "store-123461",
     "name": "OUSADIA",
-    "category": "Vestuário Feminino",
+    "category": "Moda",
     "floor": "Local: L1077",
     "hours": "10:00 - 22:00",
     "phone": "(31) 98333-3705",
@@ -445,7 +485,7 @@ export const realStoresData = [
   {
     "id": "store-123462",
     "name": "PAÇAI 02",
-    "category": "Lanchonete",
+    "category": "Alimentação",
     "floor": "Local: L1015",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
@@ -465,11 +505,11 @@ export const realStoresData = [
   {
     "id": "store-123468",
     "name": "PROCESSUS ADVOCACIA",
-    "category": "Escritório",
+    "category": "Lojas & Serviços",
     "floor": "Local: L1157",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202510271714091.png"
   },
   {
@@ -485,17 +525,27 @@ export const realStoresData = [
   {
     "id": "store-56223",
     "name": "Reino Mágico - Feira de Livros",
-    "category": "Livraria",
+    "category": "Lojas & Serviços",
     "floor": "Local: Q-fixo",
     "hours": "10:00 - 22:00",
     "phone": "(11) 98506-8467",
-    "logo_icon": "📚",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/201907080959001.jpg"
+  },
+  {
+    "id": "store-riachuelo",
+    "name": "Riachuelo",
+    "category": "Moda",
+    "floor": "Piso 1 - L1020",
+    "hours": "10:00 - 22:00",
+    "phone": "(31) 3117-1511",
+    "logo_icon": "🛍️",
+    "image_url": "https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg"
   },
   {
     "id": "store-123473",
     "name": "RILIX COASTER",
-    "category": "Entretenimento, Realidade Virtual",
+    "category": "Diversão",
     "floor": "Local: Q11",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
@@ -505,7 +555,7 @@ export const realStoresData = [
   {
     "id": "store-128506",
     "name": "Snackland (em breve)",
-    "category": "Cafeteria",
+    "category": "Alimentação",
     "floor": "Local: L1078",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
@@ -525,11 +575,11 @@ export const realStoresData = [
   {
     "id": "store-28780",
     "name": "SPORT ONE",
-    "category": "Calçados",
+    "category": "Moda",
     "floor": "Piso 1",
     "hours": "10:00 - 22:00",
     "phone": "3118-8777",
-    "logo_icon": "👟",
+    "logo_icon": "🛍️",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/201907021517411.jpg"
   },
   {
@@ -555,11 +605,11 @@ export const realStoresData = [
   {
     "id": "store-123482",
     "name": "SUPERMERCADOS BH",
-    "category": "Supermercado",
+    "category": "Lojas & Serviços",
     "floor": "Local: A6",
     "hours": "10:00 - 22:00",
     "phone": "3593-7090",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202511141646111.jpg"
   },
   {
@@ -585,7 +635,7 @@ export const realStoresData = [
   {
     "id": "store-87468",
     "name": "Touti Cosmetics",
-    "category": "Perfumaria e cosméticos ",
+    "category": "Perfumaria",
     "floor": "Local: Q-26",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
@@ -605,11 +655,11 @@ export const realStoresData = [
   {
     "id": "store-123493",
     "name": "TUBARAO ATACADAO",
-    "category": "Utilidades",
+    "category": "Lojas & Serviços",
     "floor": "Local: A10",
     "hours": "10:00 - 22:00",
     "phone": "(31) 3117-1511",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202508181238211.png"
   },
   {
@@ -625,21 +675,21 @@ export const realStoresData = [
   {
     "id": "store-106161",
     "name": "Vitrine REC Studio",
-    "category": "Estúdio Audiovisual",
+    "category": "Lojas & Serviços",
     "floor": "Local: L-1036",
     "hours": "10:00 - 22:00",
     "phone": "(31) 98340-5996",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202401021536361.jpg"
   },
   {
     "id": "store-123495",
     "name": "VIVO",
-    "category": "Telefonia Celular",
+    "category": "Lojas & Serviços",
     "floor": "Local: L1017",
     "hours": "10:00 - 22:00",
     "phone": "3108-0194",
-    "logo_icon": "🏬",
+    "logo_icon": "🏦",
     "image_url": "https://sites.madnezz.com.br/api/site/upload/Loja/202507241158061.jpg"
   }
 ];
