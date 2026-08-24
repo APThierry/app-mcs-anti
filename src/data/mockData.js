@@ -68,68 +68,7 @@ export const storesData = realStoresData.length > 0 ? realStoresData : [
   }
 ];
 
-export const couponsData = [
-  {
-    id: "cupom-1",
-    storeId: "bk",
-    storeName: "Burger King Monte Carmo",
-    category: "Alimentação",
-    discount: "Combo 2 por R$ 25",
-    title: "2 Whopper Jr. + 2 Batatas Média + Refil",
-    description: "Apresente o QR Code no balcão do BK no Monte Carmo Shopping.",
-    pointsRequired: 150,
-    isFree: false,
-    expiryDate: "15/09/2026",
-    code: "BK-MC-25",
-    badgeColor: "#F59E0B",
-    image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "cupom-2",
-    storeId: "cacau-show",
-    storeName: "Cacau Show",
-    category: "Alimentação",
-    discount: "20% OFF",
-    title: "20% de Desconto na linha LaCreme e Trufas",
-    description: "Válido para compras acima de R$ 60 na loja do Monte Carmo.",
-    pointsRequired: 200,
-    isFree: false,
-    expiryDate: "20/09/2026",
-    code: "CACAU-LACREME20",
-    badgeColor: "#10B981",
-    image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=400&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "cupom-3",
-    storeId: "bolixe",
-    storeName: "BoliXe Monte Carmo",
-    category: "Diversão",
-    discount: "30% OFF",
-    title: "30% de Desconto na 1ª Hora de Boliche (Terça a Quinta)",
-    description: "Reúna a família e amigos para jogar no melhor boliche da região.",
-    pointsRequired: 300,
-    isFree: false,
-    expiryDate: "30/09/2026",
-    code: "BOLIXE-MC30",
-    badgeColor: "#6366F1",
-    image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "cupom-4",
-    storeId: "cineart",
-    storeName: "Cineart Monte Carmo",
-    category: "Diversão",
-    discount: "Pipoca Grátis",
-    title: "1 Pipoca Grande Salgada na compra de 2 Ingressos",
-    description: "Benefício exclusivo resgatável para clientes Nível Ouro e Diamante.",
-    pointsRequired: 0,
-    isFree: true,
-    expiryDate: "31/08/2026",
-    code: "CINEART-PIPOCA-MC",
-    badgeColor: "#EC4899",
-    image: "https://images.unsplash.com/photo-1585647347483-22b66260dfff?w=400&auto=format&fit=crop&q=80"
-  }
-];
+export const couponsData = [];
 
 export const eventsData = [
   {

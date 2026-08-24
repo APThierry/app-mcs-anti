@@ -61,55 +61,69 @@ export default function CouponsTab({ userData, onSelectCoupon }) {
 
       {/* Coupons List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {filteredCoupons.map((coupon) => (
-          <div key={coupon.id} className="glass-card" style={{ padding: '0', overflow: 'hidden' }}>
-            <div style={{ height: '120px', backgroundImage: `url(${coupon.image_url || coupon.image || 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
-              <span style={{ position: 'absolute', top: '10px', left: '10px', background: coupon.badge_color || coupon.badgeColor || '#10B981', color: '#fff', padding: '6px 12px', borderRadius: '8px', fontWeight: '800', fontSize: '12px' }}>
-                {coupon.discount}
-              </span>
-              {coupon.min_level && coupon.min_level !== 'Bronze' && (
-                <span style={{ position: 'absolute', top: '10px', right: '10px', background: '#ec4899', color: '#fff', padding: '4px 10px', borderRadius: '12px', fontWeight: '800', fontSize: '10px' }}>
-                  Nível {coupon.min_level}
-                </span>
-              )}
+        {filteredCoupons.length === 0 ? (
+          <div className="glass-card" style={{ textAlign: 'center', padding: '36px 18px', color: 'var(--text-muted)' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(16, 185, 129, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px auto' }}>
+              <Ticket size={28} color="#10B981" />
             </div>
-
-            <div style={{ padding: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
-                <span style={{ fontSize: '12px', color: 'var(--brand-primary)', fontWeight: '700' }}>
-                  {coupon.store_name || coupon.storeName}
+            <h4 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '6px' }}>
+              Nenhum cupom disponível no momento
+            </h4>
+            <p style={{ fontSize: '12px', lineHeight: '1.5', maxWidth: '300px', margin: '0 auto' }}>
+              As lojas do Monte Carmo Shopping estão preparando novas promoções e ofertas exclusivas para você resgatar com seus pontos!
+            </p>
+          </div>
+        ) : (
+          filteredCoupons.map((coupon) => (
+            <div key={coupon.id} className="glass-card" style={{ padding: '0', overflow: 'hidden' }}>
+              <div style={{ height: '120px', backgroundImage: `url(${coupon.image_url || coupon.image || 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg'})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+                <span style={{ position: 'absolute', top: '10px', left: '10px', background: coupon.badge_color || coupon.badgeColor || '#10B981', color: '#fff', padding: '6px 12px', borderRadius: '8px', fontWeight: '800', fontSize: '12px' }}>
+                  {coupon.discount}
                 </span>
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Clock size={12} /> Validade: {coupon.expiry_date || coupon.expiryDate || '2026-12-31'}
-                </span>
+                {coupon.min_level && coupon.min_level !== 'Bronze' && (
+                  <span style={{ position: 'absolute', top: '10px', right: '10px', background: '#ec4899', color: '#fff', padding: '4px 10px', borderRadius: '12px', fontWeight: '800', fontSize: '10px' }}>
+                    Nível {coupon.min_level}
+                  </span>
+                )}
               </div>
 
-              <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '6px' }}>
-                {coupon.title}
-              </h3>
-              <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '14px', lineHeight: '1.4' }}>
-                {coupon.description}
-              </p>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px dashed var(--border-glass)' }}>
-                <div>
-                  <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Custo em Pontos</span>
-                  <div style={{ fontSize: '16px', fontWeight: '800', color: 'var(--brand-gold)' }}>
-                    {coupon.is_free || coupon.points_required === 0 ? '0 pts (Benefício Exclusivo)' : `${coupon.points_required || coupon.pointsRequired} pts`}
-                  </div>
+              <div style={{ padding: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
+                  <span style={{ fontSize: '12px', color: 'var(--brand-primary)', fontWeight: '700' }}>
+                    {coupon.store_name || coupon.storeName}
+                  </span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Clock size={12} /> Validade: {coupon.expiry_date || coupon.expiryDate || '2026-12-31'}
+                  </span>
                 </div>
 
-                <button 
-                  className="btn-primary-action" 
-                  style={{ width: 'auto', padding: '10px 20px', fontSize: '13px' }}
-                  onClick={() => onSelectCoupon(coupon)}
-                >
-                  <Ticket size={16} /> Resgatar
-                </button>
+                <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '6px' }}>
+                  {coupon.title}
+                </h3>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '14px', lineHeight: '1.4' }}>
+                  {coupon.description}
+                </p>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px dashed var(--border-glass)' }}>
+                  <div>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Custo em Pontos</span>
+                    <div style={{ fontSize: '16px', fontWeight: '800', color: 'var(--brand-gold)' }}>
+                      {coupon.is_free || coupon.points_required === 0 ? '0 pts (Benefício Exclusivo)' : `${coupon.points_required || coupon.pointsRequired} pts`}
+                    </div>
+                  </div>
+
+                  <button 
+                    className="btn-primary-action" 
+                    style={{ width: 'auto', padding: '10px 20px', fontSize: '13px' }}
+                    onClick={() => onSelectCoupon(coupon)}
+                  >
+                    <Ticket size={16} /> Resgatar
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
