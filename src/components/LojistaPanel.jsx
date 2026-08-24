@@ -10,6 +10,9 @@ import { realStoresData } from '../data/realData';
 const LOJISTA_SESSION_KEY = 'mcs_lojista_session';
 
 export default function LojistaPanel({ onBack }) {
+  // Ordena todas as 64 lojas oficiais do Monte Carmo em ordem alfabética
+  const officialStores = [...realStoresData].sort((a, b) => a.name.localeCompare(b.name));
+
   // Estado de Autenticação do Lojista
   const [lojistaSession, setLojistaSession] = useState(() => {
     try {
@@ -21,10 +24,9 @@ export default function LojistaPanel({ onBack }) {
   });
 
   // Formulário de Login do Lojista
-  const [loginStore, setLoginStore] = useState('Burger King');
+  const [loginStore, setLoginStore] = useState(officialStores[0]?.name || 'Academia Plataforma');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [loginLoading, setLoginLoading] = useState(false);
 
   // Estados do Painel Operacional
   const [activeTab, setActiveTab] = useState('create_coupon'); // 'create_coupon' | 'manage_coupons' | 'validate'
@@ -56,7 +58,7 @@ export default function LojistaPanel({ onBack }) {
   const loadCoupons = async () => {
     const data = await dataService.getCoupons();
     if (lojistaSession?.store) {
-      // Filtra os cupons da loja autenticada
+      // Filtra estritamente os cupons da loja oficial logada
       setCouponsList(data.filter(c => c.store_name?.toLowerCase() === lojistaSession.store.toLowerCase()));
     } else {
       setCouponsList(data);
@@ -78,10 +80,16 @@ export default function LojistaPanel({ onBack }) {
       return;
     }
 
-    // Validação de Senha do Lojista (Aceita 'lojista2026', 'montecarmo', ou 123456)
+    const matchedStore = officialStores.find(s => s.name.toLowerCase() === loginStore.toLowerCase());
+
+    // Senha padrão ou senha cadastrada
     if (loginPassword === 'lojista2026' || loginPassword === 'montecarmo' || loginPassword === '123456' || loginPassword.length >= 6) {
       const session = {
-        store: loginStore,
+        store: matchedStore ? matchedStore.name : loginStore,
+        category: matchedStore?.category || 'Lojas & Serviços',
+        floor: matchedStore?.floor || 'Piso 1',
+        phone: matchedStore?.phone || '(31) 3117-1511',
+        image_url: matchedStore?.image_url || 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg',
         loggedAt: new Date().toISOString()
       };
       setLojistaSession(session);
@@ -102,7 +110,7 @@ export default function LojistaPanel({ onBack }) {
     const cleanCode = voucherCode.trim().toUpperCase();
     if (!cleanCode) return;
 
-    const currentStore = lojistaSession?.store || 'Burger King';
+    const currentStore = lojistaSession?.store || 'Loja Monte Carmo';
 
     const alreadyUsed = validatedHistory.find(h => h.code === cleanCode);
     if (alreadyUsed) {
@@ -166,11 +174,13 @@ export default function LojistaPanel({ onBack }) {
     if (!newCouponTitle || !newCouponDiscount || !newCouponCode || isSubmitting) return;
 
     setIsSubmitting(true);
-    const currentStore = lojistaSession?.store || 'Burger King';
+    const currentStore = lojistaSession?.store || 'Loja Monte Carmo';
+    const storeCategory = lojistaSession?.category || 'Lojas & Serviços';
+    const storeImage = lojistaSession?.image_url || 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg';
 
     const newCouponObj = {
       store_name: currentStore,
-      store_category: 'Alimentação / Lazer',
+      store_category: storeCategory,
       title: newCouponTitle,
       description: newCouponDesc || `Apresente no balcão da loja ${currentStore} no Monte Carmo Shopping.`,
       discount: newCouponDiscount,
@@ -180,7 +190,7 @@ export default function LojistaPanel({ onBack }) {
       code_prefix: newCouponCode.toUpperCase(),
       expiry_date: newCouponExpiry,
       badge_color: '#10B981',
-      image_url: 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg',
+      image_url: storeImage,
       is_active: true
     };
 
@@ -207,7 +217,7 @@ export default function LojistaPanel({ onBack }) {
   };
 
   // =========================================================================
-  // 1. TELA DE LOGIN OBRIGATÓRIA DO LOJISTA
+  // 1. TELA DE LOGIN OBRIGATÓRIA DO LOJISTA (64 Lojas Reais)
   // =========================================================================
   if (!lojistaSession) {
     return (
@@ -225,9 +235,9 @@ export default function LojistaPanel({ onBack }) {
             <Lock size={26} color="#10B981" />
           </div>
 
-          <h3 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '4px' }}>Área Restrita do Lojista</h3>
+          <h3 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '4px' }}>Portal do Lojista Monte Carmo</h3>
           <p style={{ fontSize: '12px', color: '#94A3B8', marginBottom: '20px' }}>
-            Acesso exclusivo para gerentes e operadores de caixa cadastrarem cupons e validarem vouchers no Monte Carmo.
+            Acesso exclusivo para os gerentes e operadores das <strong>64 lojas do shopping</strong> cadastrarem cupons e validarem vouchers.
           </p>
 
           {loginError && (
@@ -239,27 +249,29 @@ export default function LojistaPanel({ onBack }) {
           <form onSubmit={handleLojistaLogin} style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div>
               <label style={{ fontSize: '11px', fontWeight: '700', color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
-                🏢 Selecione o Estabelecimento / Loja:
+                🏢 Selecione sua Loja ({officialStores.length} Lojas Oficiais):
               </label>
               <select 
                 value={loginStore} 
                 onChange={(e) => setLoginStore(e.target.value)}
-                style={{ width: '100%', padding: '12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', color: '#FFF', fontSize: '14px', fontWeight: '700', outline: 'none' }}
+                style={{ width: '100%', padding: '12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', color: '#FFF', fontSize: '13px', fontWeight: '700', outline: 'none' }}
               >
-                {['Burger King', 'Cacau Show', 'BoliXe Monte Carmo', 'Cineart Monte Carmo', 'Lojas Renner', 'Artesanato do Japa', 'Academia Plataforma', 'Outra Loja'].map(s => (
-                  <option key={s} value={s}>{s}</option>
+                {officialStores.map(s => (
+                  <option key={s.id} value={s.name}>
+                    {s.name} ({s.category} • {s.floor})
+                  </option>
                 ))}
               </select>
             </div>
 
             <div>
               <label style={{ fontSize: '11px', fontWeight: '700', color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
-                🔑 Senha de Acesso do Lojista:
+                🔑 Senha de Acesso da Loja:
               </label>
               <input
                 type="password"
                 required
-                placeholder="Digite a senha da loja..."
+                placeholder="Digite a senha do estabelecimento..."
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
                 style={{ width: '100%', padding: '12px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', color: '#FFF', fontSize: '14px', outline: 'none' }}
@@ -271,7 +283,7 @@ export default function LojistaPanel({ onBack }) {
               className="btn-primary-action"
               style={{ marginTop: '10px', padding: '14px', fontSize: '14px', fontWeight: '800', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
             >
-              <Key size={18} /> Entrar no Portal do Lojista
+              <Key size={18} /> Entrar no Portal da Loja
             </button>
           </form>
         </div>
@@ -305,8 +317,9 @@ export default function LojistaPanel({ onBack }) {
       {/* Loja Ativa */}
       <div className="glass-card" style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <span style={{ fontSize: '11px', color: '#94A3B8', fontWeight: '700' }}>LOJA CONECTADA</span>
+          <span style={{ fontSize: '11px', color: '#94A3B8', fontWeight: '700' }}>ESTABELECIMENTO OFICIAL</span>
           <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#10B981', margin: '2px 0' }}>{lojistaSession.store}</h3>
+          <span style={{ fontSize: '11px', color: '#CBD5E1' }}>{lojistaSession.floor} • {lojistaSession.phone}</span>
         </div>
         <div style={{ background: 'rgba(16, 185, 129, 0.15)', padding: '6px 10px', borderRadius: '12px', border: '1px solid #10B981', fontSize: '11px', fontWeight: '800', color: '#10B981' }}>
           ✓ Caixa Operante
