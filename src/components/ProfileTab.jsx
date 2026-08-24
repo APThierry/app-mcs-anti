@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   User, Key, HelpCircle, FileText, Bell, QrCode, Receipt, 
-  MessageCircle, LogOut, Copy, Share2, Award, ChevronRight, Check, Sparkles, Phone
+  MessageCircle, LogOut, Copy, Share2, Award, ChevronRight, Check, Sparkles, Phone, Store
 } from 'lucide-react';
 
 export default function ProfileTab({ userData, setUserData, setActiveTab, onOpenAuthModal, onNavigateSubView }) {
