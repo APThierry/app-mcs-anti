@@ -398,6 +398,10 @@ export default function App() {
                   </div>
                 )}
 
+                {currentSubView === 'lojista_panel' && (
+                  <LojistaPanel onBack={() => setCurrentSubView(null)} />
+                )}
+
                 {!currentSubView && (
                   <>
                     {activeTab === 'home' && (

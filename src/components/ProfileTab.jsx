@@ -130,6 +130,17 @@ export default function ProfileTab({ userData, setUserData, setActiveTab, onOpen
           <ChevronRight size={18} color="var(--text-muted)" />
         </a>
 
+        {/* Acesso do Lojista (Login & Cadastro de Cupons) */}
+        <div 
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 4px', borderBottom: '1px solid var(--border-glass)', cursor: 'pointer' }}
+          onClick={() => onNavigateSubView && onNavigateSubView('lojista_panel')}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '14px', fontWeight: '700', color: '#10B981' }}>
+            <Store size={18} color="#10B981" /> 🔐 Portal do Lojista (Cupons & Caixa)
+          </div>
+          <span style={{ fontSize: '11px', background: 'rgba(16, 185, 129, 0.15)', color: '#10B981', padding: '2px 8px', borderRadius: '10px', fontWeight: '800' }}>ENTRAR</span>
+        </div>
+
         <div 
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 4px', cursor: 'pointer' }}
           onClick={onOpenAuthModal}
