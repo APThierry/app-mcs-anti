@@ -1,7 +1,6 @@
 import { supabase, isSupabaseConfigured } from './supabase';
 import { initialUserData, initialReceiptsData, couponsData, notificationsData } from '../data/mockData';
 
-// Chaves do LocalStorage para modo offline/local
 const STORAGE_KEYS = {
   USER: 'mcs_user_profile',
   RECEIPTS: 'mcs_receipts',
@@ -10,7 +9,6 @@ const STORAGE_KEYS = {
   NOTIFICATIONS: 'mcs_notifications'
 };
 
-// Helpers para LocalStorage
 function getLocalItem(key, defaultValue) {
   try {
     const item = localStorage.getItem(key);
@@ -34,21 +32,28 @@ export const dataService = {
   // ==========================================
   async getUserProfile() {
     if (isSupabaseConfigured) {
-      const { data, error } = await supabase.from('profiles').select('*').single();
-      if (!error && data) return data;
+      try {
+        const { data, error } = await supabase.from('profiles').select('*').limit(1).maybeSingle();
+        if (!error && data) return data;
+      } catch (e) {
+        console.warn('Fallback perfil:', e.message);
+      }
     }
     return getLocalItem(STORAGE_KEYS.USER, initialUserData);
   },
 
   async updateUserProfile(updates) {
-    if (isSupabaseConfigured) {
-      const { data, error } = await supabase
-        .from('profiles')
-        .update(updates)
-        .eq('email', updates.email)
-        .select()
-        .single();
-      if (!error && data) return data;
+    if (isSupabaseConfigured && updates.email) {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .upsert([updates], { onConflict: 'email' })
+          .select()
+          .single();
+        if (!error && data) return data;
+      } catch (e) {
+        console.warn('Erro ao atualizar perfil no Supabase:', e.message);
+      }
     }
     const current = getLocalItem(STORAGE_KEYS.USER, initialUserData);
     const updated = { ...current, ...updates };
@@ -60,7 +65,6 @@ export const dataService = {
     const current = await this.getUserProfile();
     const newPoints = (current.points || 0) + pointsToAdd;
     
-    // Atualiza nível conforme pontuação
     let newLevel = 'Bronze';
     let nextLevel = 'Prata';
     let nextPoints = 500;
@@ -93,25 +97,40 @@ export const dataService = {
   // ==========================================
   async getReceipts() {
     if (isSupabaseConfigured) {
-      const { data, error } = await supabase
-        .from('receipts')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (!error && data) return data;
+      try {
+        const { data, error } = await supabase
+          .from('receipts')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (!error && data && data.length > 0) return data;
+      } catch (e) {
+        console.warn('Erro ao buscar notas do Supabase:', e.message);
+      }
     }
     return getLocalItem(STORAGE_KEYS.RECEIPTS, initialReceiptsData);
   },
 
   async addReceipt(receiptData) {
     if (isSupabaseConfigured) {
-      const { data, error } = await supabase
-        .from('receipts')
-        .insert([receiptData])
-        .select()
-        .single();
-      if (!error && data) {
-        await this.addPoints(receiptData.points_earned || 0);
-        return data;
+      try {
+        const { data, error } = await supabase
+          .from('receipts')
+          .insert([{
+            store_name: receiptData.store_name || receiptData.storeName || 'Loja Monte Carmo',
+            amount: parseFloat(receiptData.amount) || 50.00,
+            points_earned: parseInt(receiptData.points_earned || receiptData.pointsEarned) || 50,
+            access_key_44: receiptData.access_key_44 || null,
+            status: receiptData.status || 'Aprovada'
+          }])
+          .select()
+          .single();
+
+        if (!error && data) {
+          await this.addPoints(data.points_earned || 0);
+          return data;
+        }
+      } catch (e) {
+        console.warn('Fallback ao inserir nota:', e.message);
       }
     }
 
@@ -137,12 +156,22 @@ export const dataService = {
   // ==========================================
   async getCoupons() {
     if (isSupabaseConfigured) {
-      const { data, error } = await supabase
-        .from('coupons')
-        .select('*')
-        .eq('is_active', true);
-      if (!error && data && data.length > 0) return data;
+      try {
+        const { data, error } = await supabase
+          .from('coupons')
+          .select('*')
+          .eq('is_active', true)
+          .order('created_at', { ascending: false });
+
+        if (!error && data && data.length > 0) {
+          setLocalItem(STORAGE_KEYS.COUPONS, data);
+          return data;
+        }
+      } catch (e) {
+        console.warn('Erro ao buscar cupons do Supabase:', e.message);
+      }
     }
+
     const local = getLocalItem(STORAGE_KEYS.COUPONS, null);
     if (local && local.length > 0) return local;
     return couponsData;
@@ -150,45 +179,75 @@ export const dataService = {
 
   async saveCoupons(coupons) {
     setLocalItem(STORAGE_KEYS.COUPONS, coupons);
-    if (isSupabaseConfigured) {
-      try {
-        await supabase.from('coupons').upsert(coupons);
-      } catch (err) {
-        console.warn('Erro ao sincronizar cupons com Supabase:', err.message);
-      }
-    }
   },
 
   async addCoupon(couponData) {
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from('coupons')
+          .insert([couponData])
+          .select()
+          .single();
+
+        if (!error && data) {
+          const current = await this.getCoupons();
+          setLocalItem(STORAGE_KEYS.COUPONS, [data, ...current]);
+          return data;
+        }
+      } catch (e) {
+        console.warn('Fallback ao cadastrar cupom:', e.message);
+      }
+    }
+
     const current = await this.getCoupons();
     const updated = [couponData, ...current];
-    await this.saveCoupons(updated);
+    setLocalItem(STORAGE_KEYS.COUPONS, updated);
     return couponData;
   },
 
   async redeemCoupon(coupon) {
     const user = await this.getUserProfile();
-    if (!coupon.isFree && user.points < coupon.pointsRequired) {
-      throw new Error(`Pontos insuficientes. Você possui ${user.points} pts.`);
+    const pointsRequired = coupon.points_required !== undefined ? coupon.points_required : (coupon.pointsRequired || 0);
+    const isFree = coupon.is_free || pointsRequired === 0;
+
+    if (!isFree && (user.points || 0) < pointsRequired) {
+      throw new Error(`Pontos insuficientes. Você possui ${user.points || 0} pts.`);
     }
 
-    // Deduz pontos se não for grátis
-    if (!coupon.isFree) {
+    if (!isFree) {
       await this.updateUserProfile({
         ...user,
-        points: user.points - coupon.pointsRequired
+        points: (user.points || 0) - pointsRequired
       });
     }
+
+    const voucherCode = `${coupon.code_prefix || coupon.code || 'MC'}-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const redemption = {
       id: `RED-${Date.now()}`,
       couponId: coupon.id,
-      storeName: coupon.storeName,
+      storeName: coupon.store_name || coupon.storeName,
       title: coupon.title,
-      voucherCode: `${coupon.code || 'MC'}-${Math.floor(1000 + Math.random() * 9000)}`,
+      voucherCode: voucherCode,
       status: 'Ativo',
       redeemedAt: new Date().toISOString()
     };
+
+    if (isSupabaseConfigured) {
+      try {
+        await supabase.from('coupon_redemptions').insert([{
+          coupon_id: coupon.id?.includes('-') ? coupon.id : null,
+          store_name: coupon.store_name || coupon.storeName,
+          voucher_code: voucherCode,
+          customer_name: user.name || 'Cliente Monte Carmo',
+          customer_email: user.email,
+          status: 'Ativo'
+        }]);
+      } catch (e) {
+        console.warn('Erro ao salvar resgate no Supabase:', e.message);
+      }
+    }
 
     const currentRedemptions = getLocalItem(STORAGE_KEYS.REDEMPTIONS, []);
     setLocalItem(STORAGE_KEYS.REDEMPTIONS, [redemption, ...currentRedemptions]);
@@ -200,11 +259,15 @@ export const dataService = {
   // ==========================================
   async getNotifications() {
     if (isSupabaseConfigured) {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (!error && data) return data;
+      try {
+        const { data, error } = await supabase
+          .from('notifications')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (!error && data && data.length > 0) return data;
+      } catch (e) {
+        console.warn('Erro ao buscar notificações:', e.message);
+      }
     }
     return getLocalItem(STORAGE_KEYS.NOTIFICATIONS, notificationsData);
   }
