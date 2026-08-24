@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured } from './supabase';
-import { initialUserData, initialReceiptsData, couponsData, notificationsData } from '../data/mockData';
+import { initialUserData, initialReceiptsData, notificationsData } from '../data/mockData';
 
 const STORAGE_KEYS = {
   USER: 'mcs_user_profile',
@@ -151,9 +151,9 @@ export const dataService = {
     return newReceipt;
   },
 
-  // ==========================================
-  // CUPONS & PRÊMIOS
-  // ==========================================
+  // =========================================================================
+  // CUPONS & PROMOÇÕES CADASTRADAS PELOS LOJISTAS NO BANCO DE DADOS
+  // =========================================================================
   async getCoupons() {
     if (isSupabaseConfigured) {
       try {
@@ -163,7 +163,7 @@ export const dataService = {
           .eq('is_active', true)
           .order('created_at', { ascending: false });
 
-        if (!error && data && data.length > 0) {
+        if (!error && data) {
           setLocalItem(STORAGE_KEYS.COUPONS, data);
           return data;
         }
@@ -172,21 +172,33 @@ export const dataService = {
       }
     }
 
-    const local = getLocalItem(STORAGE_KEYS.COUPONS, null);
-    if (local && local.length > 0) return local;
-    return couponsData;
+    const local = getLocalItem(STORAGE_KEYS.COUPONS, []);
+    return local;
   },
 
-  async saveCoupons(coupons) {
-    setLocalItem(STORAGE_KEYS.COUPONS, coupons);
-  },
-
+  // Cadastra um novo cupom no Supabase quando o Lojista salva
   async addCoupon(couponData) {
+    const cleanPayload = {
+      store_name: couponData.store_name,
+      store_category: couponData.store_category || 'Lojas & Serviços',
+      title: couponData.title,
+      description: couponData.description,
+      discount: couponData.discount,
+      points_required: parseInt(couponData.points_required, 10) || 0,
+      is_free: Boolean(couponData.is_free),
+      min_level: couponData.min_level || 'Bronze',
+      code_prefix: (couponData.code_prefix || 'MC').toUpperCase(),
+      expiry_date: couponData.expiry_date || '2026-12-31',
+      badge_color: couponData.badge_color || '#10B981',
+      image_url: couponData.image_url || 'https://sites.madnezz.com.br/api/site/upload/Banner/201907021221201.jpg',
+      is_active: true
+    };
+
     if (isSupabaseConfigured) {
       try {
         const { data, error } = await supabase
           .from('coupons')
-          .insert([couponData])
+          .insert([cleanPayload])
           .select()
           .single();
 
@@ -196,14 +208,34 @@ export const dataService = {
           return data;
         }
       } catch (e) {
-        console.warn('Fallback ao cadastrar cupom:', e.message);
+        console.warn('Erro ao cadastrar cupom no Supabase:', e.message);
+      }
+    }
+
+    const localObj = { ...cleanPayload, id: `local-${Date.now()}` };
+    const current = await this.getCoupons();
+    const updated = [localObj, ...current];
+    setLocalItem(STORAGE_KEYS.COUPONS, updated);
+    return localObj;
+  },
+
+  // Remove ou desativa um cupom do lojista no Supabase
+  async deleteCoupon(couponId) {
+    if (isSupabaseConfigured) {
+      try {
+        await supabase
+          .from('coupons')
+          .delete()
+          .eq('id', couponId);
+      } catch (e) {
+        console.warn('Erro ao deletar cupom no Supabase:', e.message);
       }
     }
 
     const current = await this.getCoupons();
-    const updated = [couponData, ...current];
+    const updated = current.filter(c => c.id !== couponId);
     setLocalItem(STORAGE_KEYS.COUPONS, updated);
-    return couponData;
+    return updated;
   },
 
   async redeemCoupon(coupon) {
