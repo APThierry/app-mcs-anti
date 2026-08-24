@@ -45,15 +45,7 @@ export default function LojistaPanel({ onBack }) {
   const [createSuccess, setCreateSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [validatedHistory, setValidatedHistory] = useState([
-    {
-      code: 'BK-MC25',
-      customer: 'Thierry Silva',
-      discount: 'Combo 2 Whopper Jr. por R$ 25',
-      time: 'Hoje às 14:32',
-      status: 'Utilizado'
-    }
-  ]);
+  const [validatedHistory, setValidatedHistory] = useState([]);
 
   const loadCoupons = async () => {
     const data = await dataService.getCoupons();
