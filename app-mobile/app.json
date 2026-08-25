@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "MonteCarmo Shopping",
+    "slug": "montecarmoshopping",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0F172A"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.montecarmoshopping.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "O aplicativo precisa de acesso à câmera para escanear o QR Code da nota fiscal e liberar seus pontos."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0F172A"
+      },
+      "package": "com.montecarmoshopping.app",
+      "permissions": [
+        "CAMERA",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permita o acesso à câmera para ler a nota fiscal."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "868a5697-aed7-4766-857c-68a6457e4daa"
+      }
+    }
+  }
+}
